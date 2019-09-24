@@ -18,6 +18,7 @@ Created on Mon Sep 16 14:59:58 2019
 ## 4) Generate the header file from the Python objects              # 
 #####################################################################
 
+import os
 from FileScavenger import FileScavenger
 from FileParser import FileParser
 from ObjectFormatter import ObjectFormatter
@@ -26,7 +27,12 @@ if __name__ == '__main__':
     
     test_dir = "C:/Users/MaxR/Desktop/PYTHON_Workspace/OPtICS/OPtICS_Test"
     
-    top_dir = "C:/Users/MaxR/Desktop/PYTHON_Workspace/LRADS_PPP_US/src"
+    
+    if os.name == "posix":
+        top_dir = "/home/maxr/Desktop/PYTHON_Workspace/LRADS_PPP_US/src"
+    else:
+        top_dir = "C:/Users/MaxR/Desktop/PYTHON_Workspace/LRADS_PPP_US/src"
+    
     exclude_dirs = ["bme280", "device", "gps", "memory_management", "pid", "ipc"]
     
     

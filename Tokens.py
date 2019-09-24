@@ -190,7 +190,7 @@ class CodeRegex(object):
         #
         # STRUCT TAIL REGEX
         #
-        self.struct_tail_regex = "(\})[\s\w\(]*\)*\s*(\w*);"
+        self.struct_tail_regex = "(\})([\s\w\(]*)\)*\s*(\w*);"
         
         #
         # STRUCT REGEX
@@ -370,13 +370,24 @@ if __name__ == '__main__':
     
     print("\n-----Test struct head parsing-----")
     print(code_reg.getStructHeadRegex())
-    struct_string = "struct YOUR_STRUCT your_struct;"
+    struct_string_2 = """
+                    struct YOUR_STRUCT your_struct;
+                    """
     match_list = regexFindall(code_reg.getStructHeadRegex(), struct_string)
     print(match_list)
     
     print("\n-----Test struct tail parsing-----")
+    struct_string_2 = """
+                    typedef struct
+                    {
+                      bool   enabled;
+                      float setpoint;
+                      float feedback;
+                      float correction;
+                    } __attribute__((__packed__)) cc_log_t;
+                    """
     print(code_reg.getStructTailRegex())
-    match_list = regexFindall(code_reg.getStructTailRegex(), struct_string)
+    match_list = regexFindall(code_reg.getStructTailRegex(), struct_string_2)
     print(match_list)
     
     print("\n-----Test complete string parsing-----")

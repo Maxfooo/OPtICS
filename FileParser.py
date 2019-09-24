@@ -118,7 +118,7 @@ class FileParser(object):
                         else:
                             if not s_obj.isEmpty():
                                 obj_list.append(s_obj)
-                                making_struct = False
+                            making_struct = False
                         continue
                 
                 match_list = Utils.regexFindall(self.code_reg.getStructHeadRegex(), line)
@@ -234,10 +234,22 @@ class FileParser(object):
         for o in obj_list:
             if o.isStruct():
                 o.updateChildren()
-                if (not o.getDataTypeStr()):
+                """
+                if o.getTypedefName() == "cc_log_t":
+                    print("cc_log_t is in struct list")
+                    """
+                    
+                if (not o.getDataTypeStr() and not o.getTypedefName()):
                     print("Found empty data type struct")
                     print(o)
-                    print(o.getMemberVars())
+                    mem = o.getMemberVars()
+                    for m in range(len(mem)):
+                        if m > 2:
+                            break
+                        print("Member")
+                        print(mem[m])
+                        
+                        
         return obj_list
             
     def startStructObj(self, structMatchList):
@@ -273,10 +285,27 @@ class FileParser(object):
         if len(structMatchList) < 1:
             return s_obj
         
-        for s in structMatchList[0]:
-            if s != '}':
-                if s_obj.isTypedef():
-                    s_obj.setTypedefName(s)
+        s_tuple = structMatchList[0];
+        
+        if len(s_tuple) == 2:
+            if "(" in s_tuple[1]:
+                return s_obj
+            name_str = s_tuple[1]
+        elif (len(s_tuple) == 3):
+            name_str = s_tuple[2]
+        else:
+            return s_obj
+            
+        if name_str == "cc_log_t":
+            print("Found cc_log_t")
+        
+        if s_obj.isTypedef():
+            s_obj.setTypedefName(name_str)
+            if name_str == "cc_log_t":
+                print("Found cc_log_t")
+        else:
+            s_obj.setInstanceName(name_str)
+            
         return s_obj
         
     def makeDefineObj(self, matchList):
