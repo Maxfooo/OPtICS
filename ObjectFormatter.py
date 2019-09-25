@@ -79,7 +79,7 @@ class ObjectFormatter(object):
                         else:
                             dtype_str = non_struct.getInstanceName()
                         if member.getDataTypeStr() == dtype_str:
-                            member.setDataType(non_struct.getDataType())
+                            member.setDataTypeStr(non_struct.getDataTypeStr())
                             if non_struct.isArray():
                                 member.setArray()
                                 member.setArraySizeStr(non_struct.getArraySizeStr())
@@ -104,10 +104,26 @@ class ObjectFormatter(object):
                                 struct.exchangeMemberVar(member_index, s_obj)
                 member_index += 1
         
+        #
+        # Remove duplicates
+        #
+        clean_struct_list = list()
+        clean_struct_name_list = list()
         for s_obj in struct_list:
-            s_obj.updateChildren()
+            if s_obj.isTypedef():
+                if s_obj.getTypedefName() in clean_struct_name_list:
+                    continue
+                clean_struct_name_list.append(s_obj.getTypedefName())
+            else:
+                if s_obj.getDataTypeStr() in clean_struct_name_list:
+                    continue
+                clean_struct_name_list.append(s_obj.getDataTypeStr())
+            
+            if s_obj.hasMemberVars():
+                s_obj.updateChildren()
+                clean_struct_list.append(s_obj)
         
-        return struct_list
+        return clean_struct_list
           
     def getDataTypeToNpType(self, dataTypeStr):
         if dataTypeStr in Tokens.NpTypeMap.keys():

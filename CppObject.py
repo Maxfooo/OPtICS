@@ -86,8 +86,8 @@ class CppObject(object):
     #
     def setTypedefName(self, tName=""):
         self.str_typedef_name = tName
-    def getTypedefName(self, tName=""):
-        self.str_typedef_name = tName
+    def getTypedefName(self):
+        return self.str_typedef_name
         
     #
     # ARRAY SIZE
@@ -243,6 +243,8 @@ class CppStruct(CppObject):
         self.member_vars.insert(index, member)
     def exchangeMemberVar(self, index, newMember):
         self.member_vars[index] = newMember
+    def hasMemberVars(self):
+        return ( len(self.member_vars) > 0 )
     
     #
     # NESTED STRUCT (struct defined within this struct)

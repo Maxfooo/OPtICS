@@ -4,7 +4,7 @@ Created on Mon Sep 16 16:06:09 2019
 
 @author: MaxR
 """
-import re
+
 import CppObject
 import Tokens
 import Utils
@@ -233,12 +233,7 @@ class FileParser(object):
                 
         for o in obj_list:
             if o.isStruct():
-                o.updateChildren()
-                """
-                if o.getTypedefName() == "cc_log_t":
-                    print("cc_log_t is in struct list")
-                    """
-                    
+                o.updateChildren()      
                 if (not o.getDataTypeStr() and not o.getTypedefName()):
                     print("Found empty data type struct")
                     print(o)
@@ -296,13 +291,9 @@ class FileParser(object):
         else:
             return s_obj
             
-        if name_str == "cc_log_t":
-            print("Found cc_log_t")
         
         if s_obj.isTypedef():
             s_obj.setTypedefName(name_str)
-            if name_str == "cc_log_t":
-                print("Found cc_log_t")
         else:
             s_obj.setInstanceName(name_str)
             
@@ -444,4 +435,7 @@ class FileParser(object):
 
 if __name__ == '__main__':
     fParser = FileParser()
+    fParser.parseFile("/home/maxr/Desktop/PYTHON_Workspace/LRADS_PPP_US/src/controllers/ThermalController.h")
     print("Ran FileParser.py")
+    
+    
