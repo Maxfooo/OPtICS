@@ -140,6 +140,7 @@ class CppUnit(CppObject):
         self.is_define        = False
         self.is_constexpr     = False
         self.is_const         = False
+        self.is_enum          = False
         self.str_value        = ""
         
     #
@@ -179,12 +180,25 @@ class CppUnit(CppObject):
         return self.is_const
         
     #
+    # IS ENUM
+    #
+    def setIsEnum(self, isEnum):
+        self.is_enum = isEnum
+    def setEnum(self):
+        self.is_enum = True
+    def resetEnum(self):
+        self.is_enum = False
+    def isEnum(self):
+        return self.is_enum
+    
+    #
     # VALUE
     #
     def setValueStr(self, val=""):
         self.str_value = val
     def getValueStr(self):
         return self.str_value
+    
     
     #
     # REPRESENT

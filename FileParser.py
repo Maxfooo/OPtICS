@@ -247,11 +247,10 @@ class FileParser(object):
                             print("Found enum")
                             print(match_list)
                     else:
-                        if cpp_obj.isConst():
-                            obj_list.append(cpp_obj)
-                            if print_found_objects:
-                                print("Found enum")
-                                print(match_list)
+                        obj_list.append(cpp_obj)
+                        if print_found_objects:
+                            print("Found enum")
+                            print(match_list)
                             
                     continue
                         
@@ -455,11 +454,16 @@ class FileParser(object):
         if len(obj_tuple) > 3:
             u_obj.setValueStr(obj_tuple[index])
         
+        if u_obj.getInstanceName() == "scan_dir":
+            print("Found scan_dir variable")
+            print("scan_dir data type: ", u_obj.getDataTypeStr())
+        
         return u_obj
         
         
     def makeEnumObj(self, matchList):
         u_obj = CppObject.CppUnit()
+        
         
         if len(matchList) < 1:
             u_obj.setEmpty()
@@ -478,9 +482,12 @@ class FileParser(object):
                 return u_obj
             enum_index = 2
         
+        u_obj.setEnum()
         u_obj.setTypedef()
         u_obj.setTypedefName(obj_tuple[enum_index])
         u_obj.setDataTypeStr(Tokens.INT32_T)
+        
+        #print("Found enum", u_obj.getTypedefName())
         
         return u_obj
         
