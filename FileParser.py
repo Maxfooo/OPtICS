@@ -96,12 +96,13 @@ class FileParser(object):
                 ##################################
                 
                 
-                ### Struct ###
+                ### Struct ### (Unions will be treated very similarly to structs)
                 # 1) Struct head
                 # 1b) If struct header does NOT match, move on to preprocessor
                 # 2) Gather contents of struct until a Struct Tail match
                 # 3) Make CppStruct object for struct
                 # 4) Make CppObject for struct members, making sure to mark any member structs
+                
                 
                 if making_struct:
                     #
@@ -122,6 +123,9 @@ class FileParser(object):
                         continue
                 
                 match_list = Utils.regexFindall(self.code_reg.getStructHeadRegex(), line)
+                if len(match_list) < 1:
+                    match_list = Utils.regexFindall(self.code_reg.getUnionHeadRegex(), line)
+                    
                 if len(match_list) > 0:
                     s_obj = self.startStructObj(match_list)
                     
@@ -230,6 +234,29 @@ class FileParser(object):
                             
                     continue
                 
+                match_list = Utils.regexFindall(self.code_reg.getEnumRegex(), line)
+                if len(match_list) > 0:
+                    cpp_obj = self.makeEnumObj(match_list)
+                    
+                    if cpp_obj.isEmpty():
+                        continue
+                    
+                    if (making_struct):
+                        s_obj_q[s_obj_q_index-1].addMemberVar(cpp_obj)
+                        if print_found_objects:
+                            print("Found enum")
+                            print(match_list)
+                    else:
+                        if cpp_obj.isConst():
+                            obj_list.append(cpp_obj)
+                            if print_found_objects:
+                                print("Found enum")
+                                print(match_list)
+                            
+                    continue
+                        
+                    
+                
                 
         for o in obj_list:
             if o.isStruct():
@@ -273,7 +300,7 @@ class FileParser(object):
                 if len(s_tuple) > 3 and decl_token != 3:
                     s_obj.setArray()
                     s_obj.setArraySizeStr(s_tuple[3])
-                
+        
         return s_obj
     
     def finishStructObj(self, structMatchList, s_obj):
@@ -296,7 +323,7 @@ class FileParser(object):
             s_obj.setTypedefName(name_str)
         else:
             s_obj.setInstanceName(name_str)
-            
+        
         return s_obj
         
     def makeDefineObj(self, matchList):
@@ -431,8 +458,32 @@ class FileParser(object):
         return u_obj
         
         
+    def makeEnumObj(self, matchList):
+        u_obj = CppObject.CppUnit()
         
-
+        if len(matchList) < 1:
+            u_obj.setEmpty()
+            return u_obj
+        
+        obj_tuple = matchList[0]
+        if len(obj_tuple) < 2:
+            u_obj.setEmpty()
+            return u_obj
+        
+        enum_index = 1
+        
+        if obj_tuple[0] == Tokens.TYPEDEF:
+            if len(obj_tuple) < 3:
+                u_obj.setEmpty()
+                return u_obj
+            enum_index = 2
+        
+        u_obj.setTypedef()
+        u_obj.setTypedefName(obj_tuple[enum_index])
+        u_obj.setDataTypeStr(Tokens.INT32_T)
+        
+        return u_obj
+        
 if __name__ == '__main__':
     fParser = FileParser()
     fParser.parseFile("/home/maxr/Desktop/PYTHON_Workspace/LRADS_PPP_US/src/controllers/ThermalController.h")

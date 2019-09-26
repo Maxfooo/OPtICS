@@ -236,12 +236,16 @@ class CppStruct(CppObject):
     def getMemberVars(self):
         return self.member_vars
     def removeMemberVar(self, index):
+        if (index >= len(self.member_vars)):
+            return
         del self.member_vars[index]
     def removeMemberVarObj(self, member):
         self.member_vars.remove(member)
     def insertMemberVar(self, index, member):
         self.member_vars.insert(index, member)
     def exchangeMemberVar(self, index, newMember):
+        if (index >= len(self.member_vars)):
+            return
         self.member_vars[index] = newMember
     def hasMemberVars(self):
         return ( len(self.member_vars) > 0 )

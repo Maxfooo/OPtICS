@@ -33,7 +33,7 @@ if __name__ == '__main__':
     else:
         top_dir = "C:/Users/MaxR/Desktop/PYTHON_Workspace/LRADS_PPP_US/src"
     
-    exclude_dirs = ["bme280", "device", "gps", "memory_management", "pid", "ipc"]
+    exclude_dirs = ["bme280", "device", "memory_management", "pid", "ipc"]
     
     
     fScav = FileScavenger()
@@ -46,5 +46,7 @@ if __name__ == '__main__':
     
     objForm = ObjectFormatter()
     objList = objForm.resolveProjectHierarchy(objList)
-    for o in objList:
-        print(objForm.structToDtype(o))
+    #for o in objList:
+    #    print(objForm.structToDtype(o))
+        
+    objForm.objListToFile(objList)

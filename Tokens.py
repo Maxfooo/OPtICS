@@ -5,7 +5,6 @@ Created on Mon Sep 16 16:06:44 2019
 @author: MaxR
 """
 
-import re
 from Utils import regexFindall
 
 # Using tuples to force write protection
@@ -22,7 +21,7 @@ STATIC   = 'static'
 Qualifiers = tuple([CONST, VOLATILE, MUTABLE, STATIC])
 
 
-Avoid = tuple(['void', '\(\s*\)'])
+Avoid = tuple(['void', '\(\s*\)', 'for\s*\(', 'return'])
 
 UINT8_T  = 'uint8_t'
 UINT16_T = 'uint16_t'
@@ -199,6 +198,16 @@ class CodeRegex(object):
         self.struct_regex += "([\s\w;\[\]]*)" # body of struct
         self.struct_regex += self.getStructTailRegex()
         
+        #
+        # UNION HEAD REGEX
+        #
+        self.union_head_regex = "({0})*\s*(union)\s+(\w*)".format(TYPEDEF)
+        
+        #
+        # ENUM REGEX
+        #
+        self.enum_regex = "({0})*\s*(enum)\s*(\w*)".format(TYPEDEF)
+        
             
     def getAvoidRegex(self):
         return self.avoid_regex
@@ -229,6 +238,12 @@ class CodeRegex(object):
     
     def getStructRegex(self):
         return self.struct_regex
+    
+    def getUnionHeadRegex(self):
+        return self.union_head_regex
+    
+    def getEnumRegex(self):
+        return self.enum_regex
     
 
 if __name__ == '__main__':
@@ -389,6 +404,45 @@ if __name__ == '__main__':
     print(code_reg.getStructTailRegex())
     match_list = regexFindall(code_reg.getStructTailRegex(), struct_string_2)
     print(match_list)
+    
+    print("\n-----Test Union Header parsing-----")
+    union_string = """
+                    union ControlRegister
+                    {
+                      uint32_t word;
+                      struct {
+                        unsigned heartbeat      : 1;
+                        unsigned run            : 1;
+                        unsigned ack            : 1;
+                        unsigned synced_fw_rate : 1;
+                        unsigned unused         : 27;
+                        unsigned clear_faults   : 1;
+                      } field;
+                    }
+                    """
+    print(code_reg.getUnionHeadRegex())
+    match_list = regexFindall(code_reg.getUnionHeadRegex(), union_string)
+    print(match_list)
+    
+    
+    print("\n-----Test Enum regex-----")
+    enum_str = """
+                enum ScanDirection
+                {
+                  UP_SCAN = 0,
+                  DOWN_SCAN = 1
+                };
+                """
+    print(code_reg.getEnumRegex())
+    match_list = regexFindall(code_reg.getEnumRegex(), enum_str)
+    print(match_list)
+    
+    
+    
+    
+    ###################
+    ##
+    ###################
     
     print("\n-----Test complete string parsing-----")
     match_list = regexFindall(code_reg.getStructRegex(), all_string)
