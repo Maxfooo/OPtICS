@@ -6,6 +6,7 @@ Created on Mon Sep 16 16:06:09 2019
 """
 
 import CppObject
+#from CppObject import getObjRepr
 import Tokens
 import Utils
 
@@ -37,8 +38,6 @@ class FileParser(object):
         s_obj_q_index = 0
         
         block_comment = False
-        comment_index = -1
-        block_comment_index = -1
         
         self.current_line_num = 0
         
@@ -56,27 +55,14 @@ class FileParser(object):
                 ########################################################
                 match_list = Utils.regexFindall(self.code_reg.getAvoidRegex(), line)
                 if len(match_list) > 0:
+                    if "*/" in match_list[0] or "*/" in line:
+                        block_comment = False
                     continue
                 
                 ################################
                 # Check for commented out code #
                 ################################
-                comment_index = line.find("//")
-                if (comment_index > -1):
-                    block_comment_index = line.find("/*")
-                    if block_comment_index > -1:
-                        if comment_index < block_comment_index:
-                            # // /*  - will comment out the block comment
-                            continue
-                        else:
-                            # /* //  - will block comment out the comment
-                            block_comment = True
-                            continue
-                        
-                    if "*/" in line:
-                        # regular '//' comment does not affect the terminating block comment
-                        block_comment = False
-                        continue
+                # '//' single line comments are in the avoid regex
                             
                 if "/*" in line:
                     block_comment = True
@@ -299,6 +285,10 @@ class FileParser(object):
                 if len(s_tuple) > 3 and decl_token != 3:
                     s_obj.setArray()
                     s_obj.setArraySizeStr(s_tuple[3])
+        
+        if CppObject.getObjRepr(s_obj) == "is":
+            print("Found the struct 'is'")
+            print(structMatchList)
         
         return s_obj
     

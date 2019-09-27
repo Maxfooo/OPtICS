@@ -11,7 +11,7 @@ from pathlib import Path
 class FileScavenger(object):
     def __init__(self):
         self.files   = list()
-        self.file_exts = ['.h', '.cpp', '.c']
+        self.file_exts = ['.h', '.c']
         
     def scavenge(self, topDir=os.getcwd(), exDirs=list()):
         path = Path(topDir)

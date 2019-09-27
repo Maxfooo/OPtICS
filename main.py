@@ -49,4 +49,8 @@ if __name__ == '__main__':
     #for o in objList:
     #    print(objForm.structToDtype(o))
         
+    #objForm.objListToFile(objList)
+    
+    objList = objForm.sortStructHierarchy(objList)
+    
     objForm.objListToFile(objList)

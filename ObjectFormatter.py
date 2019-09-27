@@ -5,6 +5,7 @@ Created on Tue Sep 17 12:36:24 2019
 @author: MaxR
 """
 
+
 import CppObject
 import Tokens
 
@@ -91,7 +92,7 @@ class ObjectFormatter(object):
                                 member.setArray()
                                 member.setArraySizeStr(non_struct.getArraySizeStr())
                 
-                if (self.getObjRepr(member) == member.getParentName()):
+                if (CppObject.getObjRepr(member) == member.getParentName()):
                     # need to delete this member var because it
                     # is itself within in its own definition
                     # (don't want an infinite struct within itself)
@@ -103,7 +104,7 @@ class ObjectFormatter(object):
                 # Typedef structs would have been placed as a CppObj not a CppStruct
                 # as the parser had no way to find out it was a struct yet (until now)
                 for inner_struct in struct_list:
-                    inner_struct_repr = self.getObjRepr(inner_struct)
+                    inner_struct_repr = CppObject.getObjRepr(inner_struct)
                     if member.getDataTypeStr() == inner_struct_repr:
                         s_obj = CppObject.CppStruct()
                         s_obj.setInstanceName(member.getInstanceName())
@@ -122,7 +123,7 @@ class ObjectFormatter(object):
         clean_struct_name_list = list()
         
         for s_obj in struct_list:
-            obj_repr = self.getObjRepr(s_obj)
+            obj_repr = CppObject.getObjRepr(s_obj)
             if obj_repr in clean_struct_name_list:
                 continue
             
@@ -148,7 +149,7 @@ class ObjectFormatter(object):
     def objToDtypeMemberStr(self, obj):
         dtype_str = "  ('"
         dtype_str += obj.getInstanceName()
-        s_repr = self.getObjRepr(obj)
+        s_repr = CppObject.getObjRepr(obj)
         if obj.isStruct():
             dtype_str += "', {0}".format(self.getStructDtypeName(s_repr))
         else:
@@ -164,27 +165,57 @@ class ObjectFormatter(object):
         # Using Tyson's python dtype format
         if not sObj.isStruct():
             return
-        s_name = self.getStructDtypeName(self.getObjRepr(sObj))
+        s_name = self.getStructDtypeName(CppObject.getObjRepr(sObj))
         dtype_str = s_name + " = np.dtype([\n"
         for obj in sObj.getMemberVars():
             dtype_str += self.objToDtypeMemberStr(obj)
         dtype_str += "])\n"
     
         return dtype_str
-        
-    def getObjRepr(self, obj):
-        if obj.isTypedef():
-            return obj.getTypedefName()
-        else:
-            return obj.getDataTypeStr()
     
-    def objListToFile(self, objList, filename="Numpy_Dtype.txt"):
+    def sortStructHierarchy(self, structList):
+        """ 
+        Sort the list of structs such that all dependent (inner) struct
+        are listed first. This method isn't perfect because some member
+        names might somehow not match any struct repr name.
+        """
+        
+        n = len(structList)
+        
+        if n < 1:
+            return structList
+        
+        sorted_list = list()
+        inserted = False
+        
+        for s in range(n):
+            if s == 0:
+                sorted_list.append(structList[s])
+            else:
+                inserted = False
+                for ss in range(len(sorted_list)):
+                    if CppObject.getObjRepr(structList[s]) in sorted_list[ss].getMemberVarReprs():
+                        if ss == 0:
+                            sorted_list.insert(0, structList[s])
+                        else:
+                            sorted_list.insert(ss-1, structList[s])
+                        inserted = True
+                        break
+                
+                if not inserted:
+                    sorted_list.append(structList[s])
+                    
+                        
+        return sorted_list
+    
+    def objListToFile(self, objList, filename="OPtICS_dtypes.py"):
         # Clear contents of file if it exists
         f = open(filename, 'w')
         f.write("")
         f.close()
         # Write dtypes to file
         f = open(filename, 'a')
+        f.write("import numpy as np\n\n")
         for obj in objList:
             f.write(self.structToDtype(obj))
             f.write("\n")
@@ -232,14 +263,7 @@ if __name__ == '__main__':
     #
     #
     
-    test = [1,2,3,4]
-    new_test = list()
-    print(test)
-    for x in test:
-        x += 1
-        new_test.append(x)
-    test = new_test
-    print(test)
+    
     
     
     

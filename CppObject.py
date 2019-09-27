@@ -5,6 +5,12 @@ Created on Tue Sep 17 11:11:42 2019
 @author: MaxR
 """
 
+def getObjRepr(obj):
+    if obj.isTypedef():
+        return obj.getTypedefName()
+    else:
+        return obj.getDataTypeStr()
+
 class CppObject(object):
     def __init__(self):
         self.is_empty          = False
@@ -221,9 +227,10 @@ class CppUnit(CppObject):
 class CppStruct(CppObject):
     def __init__(self):
         CppObject.__init__(self)
-        self.is_declaration = False
-        self.member_vars    = list()
-        self.nested_structs = list()
+        self.is_declaration   = False
+        self.member_vars      = list()
+        self.member_var_reprs = list()
+        self.nested_structs   = list()
         self.setStruct()
         
     #
@@ -247,22 +254,33 @@ class CppStruct(CppObject):
         else:
             member.setParentName(self.str_data_type)
         self.member_vars.append(member)
+        self.member_var_reprs.append(getObjRepr(member))
     def getMemberVars(self):
         return self.member_vars
     def removeMemberVar(self, index):
         if (index >= len(self.member_vars)):
             return
+        del self.member_var_reprs[index]
         del self.member_vars[index]
     def removeMemberVarObj(self, member):
+        self.member_var_reprs.remove(getObjRepr(member))
         self.member_vars.remove(member)
     def insertMemberVar(self, index, member):
+        self.member_var_reprs.insert(index, getObjRepr(member))
         self.member_vars.insert(index, member)
     def exchangeMemberVar(self, index, newMember):
         if (index >= len(self.member_vars)):
             return
+        self.member_var_reprs[index] = getObjRepr(newMember)
         self.member_vars[index] = newMember
     def hasMemberVars(self):
         return ( len(self.member_vars) > 0 )
+    
+    #
+    # MEMBER VAR REPRS
+    #
+    def getMemberVarReprs(self):
+        return self.member_var_reprs
     
     #
     # NESTED STRUCT (struct defined within this struct)
