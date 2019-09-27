@@ -288,8 +288,9 @@ if __name__ == '__main__':
     var_string = "volatile uint8_t buffer = 0;"
     gen_var_string = "const MY_TYPE vari = 7;"
     var_string_2 = "std::string my_string;"
+    var_string_3 = " var = 1;"
     print(code_reg.getVariableRegex())
-    match_list = regexFindall(code_reg.getVariableRegex(), var_string_2)
+    match_list = regexFindall(code_reg.getVariableRegex(), var_string_3)
     print(match_list)
     
     print("\n-----Test uninitialized variable parsing-----")

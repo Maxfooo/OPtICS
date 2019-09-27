@@ -242,7 +242,6 @@ ThermalControlRegister_dtype = np.dtype([
 
 FirmwareRate_dtype = np.dtype([
   ('counts', np.uint32),
-  ('1', ),
 ])
 
 IORegisters_dtype = np.dtype([

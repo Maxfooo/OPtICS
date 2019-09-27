@@ -454,9 +454,12 @@ class FileParser(object):
         if len(obj_tuple) > 3:
             u_obj.setValueStr(obj_tuple[index])
         
-        if u_obj.getInstanceName() == "scan_dir":
-            print("Found scan_dir variable")
-            print("scan_dir data type: ", u_obj.getDataTypeStr())
+        try:
+            float(u_obj.getInstanceName())
+            u_obj.setEmpty()
+            return u_obj
+        except:
+            pass
         
         return u_obj
         
