@@ -237,11 +237,12 @@ class ObjectFormatter(object):
             -----------
             Struct A has child struct B, and struct B has a child C 
             Struct D has child C
+            The list of struct A-D is initially random
             ----------------------
             Problematic Situation:
             ----------------------
-            1) Struct A is appended to the sorted list
-            2) Struct D is appended to the sorted list
+            1) Struct A is appended to the sorted list (no dependencies yet)
+            2) Struct D is appended to the sorted list (no dependencies yet)
             3) Struct C is inserted in the sorted list
                 a) Because C is a child of D, it is inserted in front of D (after struct A)
             4) Struct B is inserted in the sorted list
