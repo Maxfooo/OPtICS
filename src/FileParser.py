@@ -94,8 +94,8 @@ class FileParser(object):
                 # There is a priority to parsing #
                 ##################################
                 # 1) Structs                     #
-                # 2) Preprocessor keywords       #
-                # 3) Variables                   #
+                # 2) Preproc keywords & const    #
+                # 3) Variables & arrays          #
                 ##################################
                 
                 

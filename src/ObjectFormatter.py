@@ -224,9 +224,9 @@ class ObjectFormatter(object):
     
         return dtype_str
     
-    def sortStructHierarchy(self, structList):
+    def sortObjectHierarchy(self, structList):
         """ 
-        Sort the list of structs such that all dependent (inner) struct
+        Sort the list of objects such that all dependent (inner) struct
         are listed first. 
         @todo Fix algorithm, it doesn't quite catch and order all dependencies for some reason
         """

@@ -176,7 +176,6 @@ class CodeRegex(object):
         #
         # 2D ARRAY REGEX
         #
-        # does NOT work at the moment
         self.array_2d_regex = "{0}\s*([{1}]+)\s+(\w+)\s*\[([\w]*)\]\[([\w]*)\]\s*".format(self.qualifiers_tokens, self.data_types_tokens)
         #self.array_2d_regex += "=*\s*\{*([\w\s,]*)\}*;"
         

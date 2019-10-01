@@ -33,7 +33,7 @@ def main(top_dir="", exclude_dirs=[]):
         and return a list of objects
     3) Pass the object list to ObjectFormatter.resolveProjectHierarchy 
         to properly resolve the cpp objects and values
-    4) Sort the returned object list using ObjectFormatter.sortStructHierarchy
+    4) Sort the returned object list using ObjectFormatter.sortObjectHierarchy
     5) Write the sorted object list to file
     """
 
@@ -46,7 +46,7 @@ def main(top_dir="", exclude_dirs=[]):
     objForm = ObjectFormatter()
     objList = objForm.resolveProjectHierarchy(objList)
     
-    objList = objForm.sortStructHierarchy(objList)
+    objList = objForm.sortObjectHierarchy(objList)
     
     objForm.objListToFile(objList)
 
