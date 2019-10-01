@@ -22,7 +22,7 @@ def \mbox{\hyperlink{classObjectFormatter_1_1ObjectFormatter_a6cbdec926b9570ced6
 \item 
 def \mbox{\hyperlink{classObjectFormatter_1_1ObjectFormatter_ac10c0f5fbe53ff0a870f1478ede32107}{struct\+To\+Dtype}} (self, s\+Obj)
 \item 
-def \mbox{\hyperlink{classObjectFormatter_1_1ObjectFormatter_a15e8a549a83dbf4c4cb236d9dd332677}{sort\+Struct\+Hierarchy}} (self, struct\+List)
+def \mbox{\hyperlink{classObjectFormatter_1_1ObjectFormatter_a36869ac7d8aca03f468ba1139984099c}{sort\+Object\+Hierarchy}} (self, struct\+List)
 \item 
 def \mbox{\hyperlink{classObjectFormatter_1_1ObjectFormatter_a3ec2a8913d458cf6ffc944480c2a351d}{obj\+List\+To\+File}} (self, obj\+List, filename=\char`\"{}O\+Pt\+I\+C\+S\+\_\+dtypes.\+py\char`\"{})
 \end{DoxyCompactItemize}
@@ -87,13 +87,13 @@ Ex. 'int8_t my_arr[3];' --> obj
 # 5) Rewrite object list to reflect changes
 -------------------------------------------------------------------
 \end{DoxyVerb}
- \mbox{\Hypertarget{classObjectFormatter_1_1ObjectFormatter_a15e8a549a83dbf4c4cb236d9dd332677}\label{classObjectFormatter_1_1ObjectFormatter_a15e8a549a83dbf4c4cb236d9dd332677}} 
-\index{ObjectFormatter.ObjectFormatter@{ObjectFormatter.ObjectFormatter}!sortStructHierarchy@{sortStructHierarchy}}
-\index{sortStructHierarchy@{sortStructHierarchy}!ObjectFormatter.ObjectFormatter@{ObjectFormatter.ObjectFormatter}}
-\doxysubsubsection{\texorpdfstring{sortStructHierarchy()}{sortStructHierarchy()}}
-{\footnotesize\ttfamily def Object\+Formatter.\+Object\+Formatter.\+sort\+Struct\+Hierarchy (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{struct\+List }\end{DoxyParamCaption})}
+ \mbox{\Hypertarget{classObjectFormatter_1_1ObjectFormatter_a36869ac7d8aca03f468ba1139984099c}\label{classObjectFormatter_1_1ObjectFormatter_a36869ac7d8aca03f468ba1139984099c}} 
+\index{ObjectFormatter.ObjectFormatter@{ObjectFormatter.ObjectFormatter}!sortObjectHierarchy@{sortObjectHierarchy}}
+\index{sortObjectHierarchy@{sortObjectHierarchy}!ObjectFormatter.ObjectFormatter@{ObjectFormatter.ObjectFormatter}}
+\doxysubsubsection{\texorpdfstring{sortObjectHierarchy()}{sortObjectHierarchy()}}
+{\footnotesize\ttfamily def Object\+Formatter.\+Object\+Formatter.\+sort\+Object\+Hierarchy (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{struct\+List }\end{DoxyParamCaption})}
 
-\begin{DoxyVerb}Sort the list of structs such that all dependent (inner) struct
+\begin{DoxyVerb}Sort the list of objects such that all dependent (inner) struct
 are listed first. 
 @todo Fix algorithm, it doesn't quite catch and order all dependencies for some reason
 \end{DoxyVerb}

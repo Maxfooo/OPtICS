@@ -224,11 +224,30 @@ class ObjectFormatter(object):
     
         return dtype_str
     
-    def sortObjectHierarchy(self, structList):
+    def sortObjectHierarchy(self, structList, runCount=1):
         """ 
         Sort the list of objects such that all dependent (inner) struct
         are listed first. 
-        @todo Fix algorithm, it doesn't quite catch and order all dependencies for some reason
+        An optional parameter 'runCount' lets the user recursively call
+            this function 2-4 times, the reason is as follows:
+        Several parent structs can have the same child struct and be placed out of order.
+        Ex.
+            -----------
+            Paremeters:
+            -----------
+            Struct A has child struct B, and struct B has a child C 
+            Struct D has child C
+            ----------------------
+            Problematic Situation:
+            ----------------------
+            1) Struct A is appended to the sorted list
+            2) Struct D is appended to the sorted list
+            3) Struct C is inserted in the sorted list
+                a) Because C is a child of D, it is inserted in front of D (after struct A)
+            4) Struct B is inserted in the sorted list
+                a) Because B is a child of A, it is inserted in front of A
+                b) Because A is in front of C, and B is in front of A, 
+                    C, the child of B, is now defined AFTER B, which will cause a PROBLEM
         """
         
         n = len(structList)
@@ -239,6 +258,8 @@ class ObjectFormatter(object):
         sorted_list = list()
         inserted = False
         
+        
+        
         for s in range(n):
             if s == 0:
                 sorted_list.append(structList[s])
@@ -247,8 +268,8 @@ class ObjectFormatter(object):
                 for ss in range(len(sorted_list)):
                     possible_child_repr = CppObject.getObjRepr(structList[s])
                     child_repr_list = sorted_list[ss].getMemberVarReprs()
+                    
                     if possible_child_repr in child_repr_list:
-                        print("inserted: ", possible_child_repr)
                         if ss == 0:
                             sorted_list.insert(0, structList[s])
                         else:
@@ -257,10 +278,13 @@ class ObjectFormatter(object):
                         break
                 
                 if not inserted:
-                    print(CppObject.getObjRepr(structList[s]))
                     sorted_list.append(structList[s])
                     
-                        
+                    
+        if runCount > 1 and runCount < 5:
+            runCount -= 1
+            sorted_list = self.sortObjectHierarchy(sorted_list, runCount)
+            
         return sorted_list
     
     def objListToFile(self, objList, filename="OPtICS_dtypes.py"):

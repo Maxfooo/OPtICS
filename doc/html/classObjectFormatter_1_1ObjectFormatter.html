@@ -20,6 +20,7 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="OPtICS_Logo.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">OPtICS
    &#160;<span id="projectnumber">1.0</span>
@@ -96,8 +97,8 @@ def&#160;</td><td class="memItemRight" valign="bottom"><b>__init__</b> (self)</t
 <tr class="separator:a6cbdec926b9570ced670c6188a611d85"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac10c0f5fbe53ff0a870f1478ede32107"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classObjectFormatter_1_1ObjectFormatter.html#ac10c0f5fbe53ff0a870f1478ede32107">structToDtype</a> (self, sObj)</td></tr>
 <tr class="separator:ac10c0f5fbe53ff0a870f1478ede32107"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a15e8a549a83dbf4c4cb236d9dd332677"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classObjectFormatter_1_1ObjectFormatter.html#a15e8a549a83dbf4c4cb236d9dd332677">sortStructHierarchy</a> (self, structList)</td></tr>
-<tr class="separator:a15e8a549a83dbf4c4cb236d9dd332677"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a36869ac7d8aca03f468ba1139984099c"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classObjectFormatter_1_1ObjectFormatter.html#a36869ac7d8aca03f468ba1139984099c">sortObjectHierarchy</a> (self, structList)</td></tr>
+<tr class="separator:a36869ac7d8aca03f468ba1139984099c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3ec2a8913d458cf6ffc944480c2a351d"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classObjectFormatter_1_1ObjectFormatter.html#a3ec2a8913d458cf6ffc944480c2a351d">objListToFile</a> (self, objList, filename=&quot;OPtICS_dtypes.py&quot;)</td></tr>
 <tr class="separator:a3ec2a8913d458cf6ffc944480c2a351d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -271,14 +272,14 @@ Ex. 'int8_t my_arr[3];' --&gt; obj
 </pre> 
 </div>
 </div>
-<a id="a15e8a549a83dbf4c4cb236d9dd332677"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a15e8a549a83dbf4c4cb236d9dd332677">&#9670;&nbsp;</a></span>sortStructHierarchy()</h2>
+<a id="a36869ac7d8aca03f468ba1139984099c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a36869ac7d8aca03f468ba1139984099c">&#9670;&nbsp;</a></span>sortObjectHierarchy()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">def ObjectFormatter.ObjectFormatter.sortStructHierarchy </td>
+          <td class="memname">def ObjectFormatter.ObjectFormatter.sortObjectHierarchy </td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
           <td class="paramname"><em>self</em>, </td>
@@ -296,7 +297,7 @@ Ex. 'int8_t my_arr[3];' --&gt; obj
         </tr>
       </table>
 </div><div class="memdoc">
-<pre class="fragment">Sort the list of structs such that all dependent (inner) struct
+<pre class="fragment">Sort the list of objects such that all dependent (inner) struct
 are listed first. 
 @todo Fix algorithm, it doesn't quite catch and order all dependencies for some reason
 </pre><p> <br  />

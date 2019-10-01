@@ -70,6 +70,10 @@ ControlRegister_dtype = np.dtype([
   ('word', np.uint32),
 ])
 
+FWTimersControlRegister_dtype = np.dtype([
+  ('word', np.uint32),
+])
+
 FirmwareVersion_dtype = np.dtype([
   ('minor', np.uint16),
   ('major', np.uint16),
@@ -227,6 +231,16 @@ Backgrounds_dtype = np.dtype([
   ('ch4', np.float32),
 ])
 
+hys_control_log_dtype = np.dtype([
+  ('state', np.int32),
+  ('val', np.float32),
+  ('lock_pt', np.float32),
+  ('output', np.float32),
+  ('direction', np.float32),
+  ('faulted', np.uint8),
+  ('enabled', np.uint8),
+])
+
 """
 ADCsManager_dtype = np.dtype([
   ('laser_raw_adcs', ),
@@ -234,8 +248,81 @@ ADCsManager_dtype = np.dtype([
 ])
 """
 
-FWTimersControlRegister_dtype = np.dtype([
-  ('word', np.uint32),
+ml_cmd_t_dtype = np.dtype([
+  ('ovr_fsm', np.uint8),
+  ('characterize', np.uint8),
+  ('temp', np.float32),
+  ('current', np.float32),
+  ('amplitude', np.float32),
+  ('offset', np.float32),
+  ('phase', np.float32),
+])
+
+ml_status_t_dtype = np.dtype([
+  ('state', np.int32),
+  ('wells_valid', np.uint8),
+  ('wells_midpoint', np.float32),
+  ('well_center_sp', np.float32),
+  ('well_center_corr', np.float32),
+  ('temp_stable', np.uint8),
+  ('temp_sp', np.float32),
+  ('temp', np.float32),
+  ('temp_std_dev', np.float32),
+  ('pressure', np.float32),
+  ('current', np.float32),
+  ('amplitude', np.float32),
+  ('offset', np.float32),
+  ('phase', np.float32),
+  ('up_scan_stable', np.uint8),
+  ('down_scan_stable', np.uint8),
+  ('op_env', np.uint8, 50 * 50),
+])
+
+well_stats_t_dtype = np.dtype([
+  ('scan_dir', np.int32),
+  ('wells_valid', np.uint8),
+  ('wells_midpoint', np.float32),
+  ('well_spacing', np.float32),
+  ('bow', np.float32, 2),
+  ('cow', np.float32, 2),
+  ('wow', np.float32, 2),
+])
+
+mode_hop_stats_t_dtype = np.dtype([
+  ('mode_hop', np.uint8),
+  ('mh_pos', np.float32),
+])
+
+LaserControl_dtype = np.dtype([
+  ('dither_en', np.uint8),
+  ('temperature', np.float32),
+  ('amplitude', np.float32),
+  ('offset', np.float32),
+  ('phase', np.float32),
+])
+
+MLControl_dtype = np.dtype([
+  ('well_stats', well_stats_t_dtype),
+  ('mode_hop_stats', mode_hop_stats_t_dtype),
+  ('ml_cmd', ml_cmd_t_dtype),
+  ('ml_status', ml_status_t_dtype),
+  ('well_lock_status', hys_control_log_dtype),
+  ('mode_lock_status', hys_control_log_dtype),
+])
+
+tc_log_t_dtype = np.dtype([
+  ('enabled', np.uint8),
+  ('stuckSensor', np.uint8),
+  ('setpoint', np.float32),
+  ('feedback', np.float32),
+  ('correction', np.float32),
+])
+
+cc_log_t_dtype = np.dtype([
+  ('enabled', np.uint8),
+  ('setpoint', np.float32),
+  ('feedback', np.float32),
+  ('correction', np.float32),
 ])
 
 LaserControlSet_dtype = np.dtype([
@@ -307,15 +394,6 @@ LoggerLoggedData_dtype = np.dtype([
   ('timestampHour', np.float64),
   ('timestampSeconds', np.float64),
   ('timestampStr', np.int8, 128),
-])
-
-MLControl_dtype = np.dtype([
-  ('well_stats', well_stats_t_dtype),
-  ('mode_hop_stats', mode_hop_stats_t_dtype),
-  ('ml_cmd', ml_cmd_t_dtype),
-  ('ml_status', ml_status_t_dtype),
-  ('well_lock_status', hys_control_log_dtype),
-  ('mode_lock_status', hys_control_log_dtype),
 ])
 
 DataOut_dtype = np.dtype([
@@ -401,7 +479,7 @@ ZDAFields_dtype = np.dtype([
 ])
 
 ZDAData_dtype = np.dtype([
-  ('sentence', np.int8, GPS_LENGTH),
+  ('sentence', np.int8, 0x0100),
   ('zda_ok', np.uint8),
   ('zdaFields', ZDAFields_dtype),
   ('zdaTime', ZDATime_dtype),
@@ -411,89 +489,11 @@ ZDAData_dtype = np.dtype([
   ('checksum', np.uint32),
 ])
 
-hys_control_log_dtype = np.dtype([
-  ('state', np.int32),
-  ('val', np.float32),
-  ('lock_pt', np.float32),
-  ('output', np.float32),
-  ('direction', np.float32),
-  ('faulted', np.uint8),
-  ('enabled', np.uint8),
-])
-
-LaserControl_dtype = np.dtype([
-  ('dither_en', np.uint8),
-  ('temperature', np.float32),
-  ('amplitude', np.float32),
-  ('offset', np.float32),
-  ('phase', np.float32),
-])
-
-ml_cmd_t_dtype = np.dtype([
-  ('ovr_fsm', np.uint8),
-  ('characterize', np.uint8),
-  ('temp', np.float32),
-  ('current', np.float32),
-  ('amplitude', np.float32),
-  ('offset', np.float32),
-  ('phase', np.float32),
-])
-
-ml_status_t_dtype = np.dtype([
-  ('state', np.int32),
-  ('wells_valid', np.uint8),
-  ('wells_midpoint', np.float32),
-  ('well_center_sp', np.float32),
-  ('well_center_corr', np.float32),
-  ('temp_stable', np.uint8),
-  ('temp_sp', np.float32),
-  ('temp', np.float32),
-  ('temp_std_dev', np.float32),
-  ('pressure', np.float32),
-  ('current', np.float32),
-  ('amplitude', np.float32),
-  ('offset', np.float32),
-  ('phase', np.float32),
-  ('up_scan_stable', np.uint8),
-  ('down_scan_stable', np.uint8),
-  ('op_env', np.uint8, 50 * 50),
-])
-
-well_stats_t_dtype = np.dtype([
-  ('scan_dir', np.int32),
-  ('wells_valid', np.uint8),
-  ('wells_midpoint', np.float32),
-  ('well_spacing', np.float32),
-  ('bow', np.float32, 2),
-  ('cow', np.float32, 2),
-  ('wow', np.float32, 2),
-])
-
-mode_hop_stats_t_dtype = np.dtype([
-  ('mode_hop', np.uint8),
-  ('mh_pos', np.float32),
-])
-
 StableCond_dtype = np.dtype([
   ('started', np.uint8),
   ('start', np.int32),
   ('stop', np.int32),
   ('length', np.int32),
-])
-
-tc_log_t_dtype = np.dtype([
-  ('enabled', np.uint8),
-  ('stuckSensor', np.uint8),
-  ('setpoint', np.float32),
-  ('feedback', np.float32),
-  ('correction', np.float32),
-])
-
-cc_log_t_dtype = np.dtype([
-  ('enabled', np.uint8),
-  ('setpoint', np.float32),
-  ('feedback', np.float32),
-  ('correction', np.float32),
 ])
 
 sockaddr_in_dtype = np.dtype([

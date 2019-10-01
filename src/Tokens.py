@@ -150,7 +150,7 @@ class CodeRegex(object):
         #
         # DEFINE REGEX
         #
-        self.define_regex = "({})\s+(\w+)\s+(\w+)".format(DEFINE)
+        self.define_regex = "({})\s+(\w+)\s+\(*(\w+)\)*".format(DEFINE)
         
         #
         # CONSTEXPR REGEX
@@ -310,8 +310,9 @@ if __name__ == '__main__':
     ############################################
     print("\n-----#DEFINE-----")
     define_string = "#define TEST_DEFINE 1"
+    define_string_2 = "#define REGISTER (0x0100)"
     print(code_reg.getDefineRegex())
-    match_list = regexFindall(code_reg.getDefineRegex(), define_string)
+    match_list = regexFindall(code_reg.getDefineRegex(), define_string_2)
     print(match_list)
     
     ############################################

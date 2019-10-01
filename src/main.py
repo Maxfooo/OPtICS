@@ -46,7 +46,7 @@ def main(top_dir="", exclude_dirs=[]):
     objForm = ObjectFormatter()
     objList = objForm.resolveProjectHierarchy(objList)
     
-    objList = objForm.sortObjectHierarchy(objList)
+    objList = objForm.sortObjectHierarchy(objList, 2)
     
     objForm.objListToFile(objList)
 
