@@ -97,8 +97,8 @@ def&#160;</td><td class="memItemRight" valign="bottom"><b>__init__</b> (self)</t
 <tr class="separator:a6cbdec926b9570ced670c6188a611d85"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac10c0f5fbe53ff0a870f1478ede32107"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classObjectFormatter_1_1ObjectFormatter.html#ac10c0f5fbe53ff0a870f1478ede32107">structToDtype</a> (self, sObj)</td></tr>
 <tr class="separator:ac10c0f5fbe53ff0a870f1478ede32107"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a36869ac7d8aca03f468ba1139984099c"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classObjectFormatter_1_1ObjectFormatter.html#a36869ac7d8aca03f468ba1139984099c">sortObjectHierarchy</a> (self, structList)</td></tr>
-<tr class="separator:a36869ac7d8aca03f468ba1139984099c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae165f66545a0104eed18167f3ef66663"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classObjectFormatter_1_1ObjectFormatter.html#ae165f66545a0104eed18167f3ef66663">sortObjectHierarchy</a> (self, structList, runCount=1)</td></tr>
+<tr class="separator:ae165f66545a0104eed18167f3ef66663"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3ec2a8913d458cf6ffc944480c2a351d"><td class="memItemLeft" align="right" valign="top">def&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classObjectFormatter_1_1ObjectFormatter.html#a3ec2a8913d458cf6ffc944480c2a351d">objListToFile</a> (self, objList, filename=&quot;OPtICS_dtypes.py&quot;)</td></tr>
 <tr class="separator:a3ec2a8913d458cf6ffc944480c2a351d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -272,8 +272,8 @@ Ex. 'int8_t my_arr[3];' --&gt; obj
 </pre> 
 </div>
 </div>
-<a id="a36869ac7d8aca03f468ba1139984099c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a36869ac7d8aca03f468ba1139984099c">&#9670;&nbsp;</a></span>sortObjectHierarchy()</h2>
+<a id="ae165f66545a0104eed18167f3ef66663"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae165f66545a0104eed18167f3ef66663">&#9670;&nbsp;</a></span>sortObjectHierarchy()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -288,7 +288,13 @@ Ex. 'int8_t my_arr[3];' --&gt; obj
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname"><em>structList</em>&#160;</td>
+          <td class="paramname"><em>structList</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>runCount</em> = <code>1</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -299,7 +305,27 @@ Ex. 'int8_t my_arr[3];' --&gt; obj
 </div><div class="memdoc">
 <pre class="fragment">Sort the list of objects such that all dependent (inner) struct
 are listed first. 
-@todo Fix algorithm, it doesn't quite catch and order all dependencies for some reason
+An optional parameter 'runCount' lets the user recursively call
+    this function 2-4 times, the reason is as follows:
+Several parent structs can have the same child struct and be placed out of order.
+Ex.
+    -----------
+    Paremeters:
+    -----------
+    Struct A has child struct B, and struct B has a child C 
+    Struct D has child C
+    The list of struct A-D is initially random
+    ----------------------
+    Problematic Situation:
+    ----------------------
+    1) Struct A is appended to the sorted list (no dependencies yet)
+    2) Struct D is appended to the sorted list (no dependencies yet)
+    3) Struct C is inserted in the sorted list
+a) Because C is a child of D, it is inserted in front of D (after struct A)
+    4) Struct B is inserted in the sorted list
+a) Because B is a child of A, it is inserted in front of A
+b) Because A is in front of C, and B is in front of A, 
+    C, the child of B, is now defined AFTER B, which will cause a PROBLEM
 </pre><p> <br  />
  </p>
 

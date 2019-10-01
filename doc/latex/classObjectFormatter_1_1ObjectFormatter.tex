@@ -22,7 +22,7 @@ def \mbox{\hyperlink{classObjectFormatter_1_1ObjectFormatter_a6cbdec926b9570ced6
 \item 
 def \mbox{\hyperlink{classObjectFormatter_1_1ObjectFormatter_ac10c0f5fbe53ff0a870f1478ede32107}{struct\+To\+Dtype}} (self, s\+Obj)
 \item 
-def \mbox{\hyperlink{classObjectFormatter_1_1ObjectFormatter_a36869ac7d8aca03f468ba1139984099c}{sort\+Object\+Hierarchy}} (self, struct\+List)
+def \mbox{\hyperlink{classObjectFormatter_1_1ObjectFormatter_ae165f66545a0104eed18167f3ef66663}{sort\+Object\+Hierarchy}} (self, struct\+List, run\+Count=1)
 \item 
 def \mbox{\hyperlink{classObjectFormatter_1_1ObjectFormatter_a3ec2a8913d458cf6ffc944480c2a351d}{obj\+List\+To\+File}} (self, obj\+List, filename=\char`\"{}O\+Pt\+I\+C\+S\+\_\+dtypes.\+py\char`\"{})
 \end{DoxyCompactItemize}
@@ -87,15 +87,35 @@ Ex. 'int8_t my_arr[3];' --> obj
 # 5) Rewrite object list to reflect changes
 -------------------------------------------------------------------
 \end{DoxyVerb}
- \mbox{\Hypertarget{classObjectFormatter_1_1ObjectFormatter_a36869ac7d8aca03f468ba1139984099c}\label{classObjectFormatter_1_1ObjectFormatter_a36869ac7d8aca03f468ba1139984099c}} 
+ \mbox{\Hypertarget{classObjectFormatter_1_1ObjectFormatter_ae165f66545a0104eed18167f3ef66663}\label{classObjectFormatter_1_1ObjectFormatter_ae165f66545a0104eed18167f3ef66663}} 
 \index{ObjectFormatter.ObjectFormatter@{ObjectFormatter.ObjectFormatter}!sortObjectHierarchy@{sortObjectHierarchy}}
 \index{sortObjectHierarchy@{sortObjectHierarchy}!ObjectFormatter.ObjectFormatter@{ObjectFormatter.ObjectFormatter}}
 \doxysubsubsection{\texorpdfstring{sortObjectHierarchy()}{sortObjectHierarchy()}}
-{\footnotesize\ttfamily def Object\+Formatter.\+Object\+Formatter.\+sort\+Object\+Hierarchy (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{struct\+List }\end{DoxyParamCaption})}
+{\footnotesize\ttfamily def Object\+Formatter.\+Object\+Formatter.\+sort\+Object\+Hierarchy (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{struct\+List,  }\item[{}]{run\+Count = {\ttfamily 1} }\end{DoxyParamCaption})}
 
 \begin{DoxyVerb}Sort the list of objects such that all dependent (inner) struct
 are listed first. 
-@todo Fix algorithm, it doesn't quite catch and order all dependencies for some reason
+An optional parameter 'runCount' lets the user recursively call
+    this function 2-4 times, the reason is as follows:
+Several parent structs can have the same child struct and be placed out of order.
+Ex.
+    -----------
+    Paremeters:
+    -----------
+    Struct A has child struct B, and struct B has a child C 
+    Struct D has child C
+    The list of struct A-D is initially random
+    ----------------------
+    Problematic Situation:
+    ----------------------
+    1) Struct A is appended to the sorted list (no dependencies yet)
+    2) Struct D is appended to the sorted list (no dependencies yet)
+    3) Struct C is inserted in the sorted list
+a) Because C is a child of D, it is inserted in front of D (after struct A)
+    4) Struct B is inserted in the sorted list
+a) Because B is a child of A, it is inserted in front of A
+b) Because A is in front of C, and B is in front of A, 
+    C, the child of B, is now defined AFTER B, which will cause a PROBLEM
 \end{DoxyVerb}
  ~\newline
  \mbox{\Hypertarget{classObjectFormatter_1_1ObjectFormatter_ac10c0f5fbe53ff0a870f1478ede32107}\label{classObjectFormatter_1_1ObjectFormatter_ac10c0f5fbe53ff0a870f1478ede32107}} 
