@@ -15,9 +15,10 @@ class ObjectFormatter(object):
         pass
     
     def resolveProjectHierarchy(self, listOfObjLists):
-        ###################################################################
+        """
+        -------------------------------------------------------------------
         # Design
-        ###################################################################
+        -------------------------------------------------------------------
         # 1) Separate objects
         #    a) Structs
         #    b) preprocessor objects and const objects
@@ -25,7 +26,8 @@ class ObjectFormatter(object):
         # 3) Use (1b) list to resolve variables to numbers
         # 4) Use struct names/typedef names to resolve member structs
         # 5) Rewrite object list to reflect changes
-        ###################################################################
+        -------------------------------------------------------------------
+        """
         
         struct_list = list()
         non_struct_list = list()
@@ -148,16 +150,31 @@ class ObjectFormatter(object):
         return clean_struct_list
           
     def getDataTypeToNpType(self, dataTypeStr):
+        """
+        Using Tokens.NpTypeMap dictionary, convert cpp data types to the
+            numpy dtype representation
+        Ex. int8_t --> np.int8
+        """
         if dataTypeStr in Tokens.NpTypeMap.keys():
             return Tokens.NpTypeMap[dataTypeStr]
         else:
             return ""
               
     def getStructDtypeName(self, structName=""):
+        """
+        Simply append '_dtype' to the end of the struct name
+        This keeps struct names consistent
+        """
         dtype_str = structName + "_dtype"
         return dtype_str
     
     def objToDtypeMemberStr(self, obj):
+        """
+        Take the essential properties of a cpp object and make it
+            a member description for a dtype definition
+        Ex. 'int8_t my_arr[3];' --> obj
+            obj --> ('my_arr', np.int8, 3),
+        """
         has_dtype = True
         dtype_str = "  ('"
         dtype_str += obj.getInstanceName()
@@ -181,6 +198,12 @@ class ObjectFormatter(object):
         return dtype_str, has_dtype
     
     def structToDtype(self, sObj):
+        """
+        Build a numpy dtype definition from a struct object.
+        A header will be created with the struct name and each of it's 
+            member variables will be converted into a dtype member string
+            and placed in this definition string.
+        """
         block_comment = False
         # Using Tyson's python dtype format
         if not sObj.isStruct():
@@ -204,8 +227,8 @@ class ObjectFormatter(object):
     def sortStructHierarchy(self, structList):
         """ 
         Sort the list of structs such that all dependent (inner) struct
-        are listed first. This method isn't perfect because some member
-        names might somehow not match any struct repr name.
+        are listed first. 
+        @todo Fix algorithm, it doesn't quite catch and order all dependencies for some reason
         """
         
         n = len(structList)
@@ -240,18 +263,12 @@ class ObjectFormatter(object):
                         
         return sorted_list
     
-    def sortStructHierarchy2(self, structList):
-        """
-        + Sort struct hierarchies into individual arrays
-        + Append structs with no hierarchy to final sorted list
-        + Concatinate and append individual struct hierarchy 
-          lists to final sorted list
-        """
-        sorted_list = []
-        
-        return sorted_list
-    
     def objListToFile(self, objList, filename="OPtICS_dtypes.py"):
+        """
+        Iterate through a list of objects and create dtype definitions for all of
+            them, then write those strings to file.
+        The file WILL OVERWRITE previous files with the same name.
+        """
         # Clear contents of file if it exists
         f = open(filename, 'w')
         f.write("")

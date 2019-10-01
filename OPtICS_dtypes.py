@@ -62,6 +62,34 @@ WellScans_dtype = np.dtype([
   ('filtered_scans', FilteredWellScans_dtype),
 ])
 
+TestRegister_dtype = np.dtype([
+  ('word', np.uint32),
+])
+
+ControlRegister_dtype = np.dtype([
+  ('word', np.uint32),
+])
+
+FirmwareVersion_dtype = np.dtype([
+  ('minor', np.uint16),
+  ('major', np.uint16),
+])
+
+FWTimers_dtype = np.dtype([
+  ('control_reg', FWTimersControlRegister_dtype),
+  ('tick_10ns', np.uint32),
+  ('tick_1us', np.uint32),
+  ('tick_1ms', np.uint32),
+])
+
+FirmwareRate_dtype = np.dtype([
+  ('counts', np.uint32),
+])
+
+StatusRegister_dtype = np.dtype([
+  ('word', np.uint32),
+])
+
 WellScanRegisters_dtype = np.dtype([
   ('ch1_signal', np.uint8, 0x2000),
   ('ch2_signal', np.uint8, 0x2000),
@@ -122,14 +150,6 @@ LTCsManager_dtype = np.dtype([
 ])
 """
 
-TestRegister_dtype = np.dtype([
-  ('word', np.uint32),
-])
-
-ControlRegister_dtype = np.dtype([
-  ('word', np.uint32),
-])
-
 DataRegisters_dtype = np.dtype([
   ('control', ControlRegister_dtype),
   ('test', TestRegister_dtype),
@@ -186,11 +206,6 @@ DataRegisters_dtype = np.dtype([
 LTC_dtype = np.dtype([
 ])
 
-FirmwareVersion_dtype = np.dtype([
-  ('minor', np.uint16),
-  ('major', np.uint16),
-])
-
 LTC2983_Register_dtype = np.dtype([
   ('status', np.uint8),
   ('value', np.float32),
@@ -223,11 +238,90 @@ FWTimersControlRegister_dtype = np.dtype([
   ('word', np.uint32),
 ])
 
-FWTimers_dtype = np.dtype([
-  ('control_reg', FWTimersControlRegister_dtype),
-  ('tick_10ns', np.uint32),
-  ('tick_1us', np.uint32),
-  ('tick_1ms', np.uint32),
+LaserControlSet_dtype = np.dtype([
+  ('pre', LaserControl_dtype),
+  ('amp0', LaserControl_dtype),
+  ('amp1', LaserControl_dtype),
+])
+
+ioLoggedData_dtype = np.dtype([
+  ('control', ControlRegister_dtype),
+  ('test', TestRegister_dtype),
+  ('fw_rate', FirmwareRate_dtype),
+  ('fw_version', FirmwareVersion_dtype),
+  ('status', StatusRegister_dtype),
+  ('miss_count', np.uint32),
+  ('timers', FWTimers_dtype),
+  ('start_time', np.uint32),
+  ('stop_time', np.uint32),
+  ('task_delay', np.uint32),
+  ('scan_dir', np.int32),
+  ('cell_tip', tc_log_t_dtype, 4),
+  ('cell_body', tc_log_t_dtype, 4),
+  ('laser_temp', tc_log_t_dtype, 4),
+  ('day_filt', tc_log_t_dtype, 2),
+  ('xcvr', tc_log_t_dtype, 1),
+  ('ref_tip', tc_log_t_dtype, 1),
+  ('ref_body', tc_log_t_dtype, 1),
+  ('laser_current', cc_log_t_dtype, 4),
+  ('ml_control', MLControl_dtype),
+])
+
+DataLoggedData_dtype = np.dtype([
+  ('control', ControlRegister_dtype),
+  ('test', TestRegister_dtype),
+  ('fw_rate', FirmwareRate_dtype),
+  ('fw_version', FirmwareVersion_dtype),
+  ('status', StatusRegister_dtype),
+  ('miss_count', np.uint32),
+  ('timers', FWTimers_dtype),
+  ('scan_count', np.uint32),
+  ('scan_bin', np.uint32),
+  ('start_time', np.uint32),
+  ('stop_time', np.uint32),
+  ('task_delay', np.uint32),
+  ('raw_scans', RawWellScans_dtype),
+  ('filtered_scans', FilteredWellScans_dtype),
+  ('backgrounds', Backgrounds_dtype),
+  ('scan_dir', np.int32),
+  ('wcs_ref', WellCharacteristics_dtype, 2),
+  ('wcs_1', WellCharacteristics_dtype, 2),
+  ('wcs_2', WellCharacteristics_dtype, 2),
+  ('wcs_3', WellCharacteristics_dtype, 2),
+  ('wcs_4', WellCharacteristics_dtype, 2),
+  ('measurements', Measurements_dtype),
+])
+
+LoggerLoggedData_dtype = np.dtype([
+  ('control', ControlRegister_dtype),
+  ('test', TestRegister_dtype),
+  ('fw_rate', FirmwareRate_dtype),
+  ('fw_version', FirmwareVersion_dtype),
+  ('status', StatusRegister_dtype),
+  ('miss_count', np.uint32),
+  ('timers', FWTimers_dtype),
+  ('start_time', np.uint32),
+  ('stop_time', np.uint32),
+  ('task_delay', np.uint32),
+  ('scan_dir', np.int32),
+  ('timestampHour', np.float64),
+  ('timestampSeconds', np.float64),
+  ('timestampStr', np.int8, 128),
+])
+
+MLControl_dtype = np.dtype([
+  ('well_stats', well_stats_t_dtype),
+  ('mode_hop_stats', mode_hop_stats_t_dtype),
+  ('ml_cmd', ml_cmd_t_dtype),
+  ('ml_status', ml_status_t_dtype),
+  ('well_lock_status', hys_control_log_dtype),
+  ('mode_lock_status', hys_control_log_dtype),
+])
+
+DataOut_dtype = np.dtype([
+  ('io_data', ioLoggedData_dtype),
+  ('data_data', DataLoggedData_dtype),
+  ('logger_data', LoggerLoggedData_dtype),
 ])
 
 CLITestData_dtype = np.dtype([
@@ -246,10 +340,6 @@ SharedDDR_dtype = np.dtype([
 
 ThermalControlRegister_dtype = np.dtype([
   ('word', np.uint32),
-])
-
-FirmwareRate_dtype = np.dtype([
-  ('counts', np.uint32),
 ])
 
 IORegisters_dtype = np.dtype([
@@ -281,10 +371,6 @@ IORegisters_dtype = np.dtype([
   ('amplitude', np.int16),
   ('offset', np.int16),
   ('phase', np.int16),
-])
-
-StatusRegister_dtype = np.dtype([
-  ('word', np.uint32),
 ])
 
 UTC_dtype = np.dtype([
@@ -343,12 +429,6 @@ LaserControl_dtype = np.dtype([
   ('phase', np.float32),
 ])
 
-LaserControlSet_dtype = np.dtype([
-  ('pre', LaserControl_dtype),
-  ('amp0', LaserControl_dtype),
-  ('amp1', LaserControl_dtype),
-])
-
 ml_cmd_t_dtype = np.dtype([
   ('ovr_fsm', np.uint8),
   ('characterize', np.uint8),
@@ -399,15 +479,6 @@ StableCond_dtype = np.dtype([
   ('start', np.int32),
   ('stop', np.int32),
   ('length', np.int32),
-])
-
-MLControl_dtype = np.dtype([
-  ('well_stats', well_stats_t_dtype),
-  ('mode_hop_stats', mode_hop_stats_t_dtype),
-  ('ml_cmd', ml_cmd_t_dtype),
-  ('ml_status', ml_status_t_dtype),
-  ('well_lock_status', hys_control_log_dtype),
-  ('mode_lock_status', hys_control_log_dtype),
 ])
 
 tc_log_t_dtype = np.dtype([
@@ -485,79 +556,6 @@ amp_cmd_t_dtype = np.dtype([
   ('voltage', np.float32),
 ])
 
-GUIPkt_dtype = np.dtype([
-])
-
-DataOut_dtype = np.dtype([
-  ('io_data', ioLoggedData_dtype),
-  ('data_data', DataLoggedData_dtype),
-  ('logger_data', LoggerLoggedData_dtype),
-])
-
-DataOutRaw_dtype = np.dtype([
-  ('io_data', ioLoggedData_dtype),
-  ('data_data', DataLoggedDataRaw_dtype),
-  ('logger_data', LoggerLoggedData_dtype),
-])
-
-FWState_dtype = np.dtype([
-  ('control', ControlRegister_dtype),
-  ('test', TestRegister_dtype),
-  ('fw_rate', FirmwareRate_dtype),
-  ('fw_version', FirmwareVersion_dtype),
-  ('status', StatusRegister_dtype),
-  ('miss_count', np.uint32),
-  ('timers', FWTimers_dtype),
-])
-
-ioLoggedData_dtype = np.dtype([
-  ('control', ControlRegister_dtype),
-  ('test', TestRegister_dtype),
-  ('fw_rate', FirmwareRate_dtype),
-  ('fw_version', FirmwareVersion_dtype),
-  ('status', StatusRegister_dtype),
-  ('miss_count', np.uint32),
-  ('timers', FWTimers_dtype),
-  ('start_time', np.uint32),
-  ('stop_time', np.uint32),
-  ('task_delay', np.uint32),
-  ('scan_dir', np.int32),
-  ('cell_tip', tc_log_t_dtype, 4),
-  ('cell_body', tc_log_t_dtype, 4),
-  ('laser_temp', tc_log_t_dtype, 4),
-  ('day_filt', tc_log_t_dtype, 2),
-  ('xcvr', tc_log_t_dtype, 1),
-  ('ref_tip', tc_log_t_dtype, 1),
-  ('ref_body', tc_log_t_dtype, 1),
-  ('laser_current', cc_log_t_dtype, 4),
-  ('ml_control', MLControl_dtype),
-])
-
-DataLoggedData_dtype = np.dtype([
-  ('control', ControlRegister_dtype),
-  ('test', TestRegister_dtype),
-  ('fw_rate', FirmwareRate_dtype),
-  ('fw_version', FirmwareVersion_dtype),
-  ('status', StatusRegister_dtype),
-  ('miss_count', np.uint32),
-  ('timers', FWTimers_dtype),
-  ('scan_count', np.uint32),
-  ('scan_bin', np.uint32),
-  ('start_time', np.uint32),
-  ('stop_time', np.uint32),
-  ('task_delay', np.uint32),
-  ('raw_scans', RawWellScans_dtype),
-  ('filtered_scans', FilteredWellScans_dtype),
-  ('backgrounds', Backgrounds_dtype),
-  ('scan_dir', np.int32),
-  ('wcs_ref', WellCharacteristics_dtype, 2),
-  ('wcs_1', WellCharacteristics_dtype, 2),
-  ('wcs_2', WellCharacteristics_dtype, 2),
-  ('wcs_3', WellCharacteristics_dtype, 2),
-  ('wcs_4', WellCharacteristics_dtype, 2),
-  ('measurements', Measurements_dtype),
-])
-
 DataLoggedDataRaw_dtype = np.dtype([
   ('control', ControlRegister_dtype),
   ('test', TestRegister_dtype),
@@ -581,7 +579,16 @@ DataLoggedDataRaw_dtype = np.dtype([
   ('measurements', Measurements_dtype),
 ])
 
-LoggerLoggedData_dtype = np.dtype([
+GUIPkt_dtype = np.dtype([
+])
+
+DataOutRaw_dtype = np.dtype([
+  ('io_data', ioLoggedData_dtype),
+  ('data_data', DataLoggedDataRaw_dtype),
+  ('logger_data', LoggerLoggedData_dtype),
+])
+
+FWState_dtype = np.dtype([
   ('control', ControlRegister_dtype),
   ('test', TestRegister_dtype),
   ('fw_rate', FirmwareRate_dtype),
@@ -589,13 +596,6 @@ LoggerLoggedData_dtype = np.dtype([
   ('status', StatusRegister_dtype),
   ('miss_count', np.uint32),
   ('timers', FWTimers_dtype),
-  ('start_time', np.uint32),
-  ('stop_time', np.uint32),
-  ('task_delay', np.uint32),
-  ('scan_dir', np.int32),
-  ('timestampHour', np.float64),
-  ('timestampSeconds', np.float64),
-  ('timestampStr', np.int8, 128),
 ])
 
 ClientStatus_dtype = np.dtype([

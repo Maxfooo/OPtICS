@@ -1,0 +1,190 @@
+\hypertarget{classFileParser_1_1FileParser}{}\doxysection{File\+Parser.\+File\+Parser Class Reference}
+\label{classFileParser_1_1FileParser}\index{FileParser.FileParser@{FileParser.FileParser}}
+Inheritance diagram for File\+Parser.\+File\+Parser\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classFileParser_1_1FileParser}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+def \mbox{\hyperlink{classFileParser_1_1FileParser_a2b09e8b1b8fb013380b737eb57de6864}{\+\_\+\+\_\+init\+\_\+\+\_\+}} (self)
+\item 
+def \mbox{\hyperlink{classFileParser_1_1FileParser_a7eadc6cb7351ae4374133f2f73b747a4}{parse\+File\+List}} (self, file\+List)
+\item 
+def \mbox{\hyperlink{classFileParser_1_1FileParser_a017c96f3f60db76b66e8bbe34b714af1}{parse\+File}} (self, file)
+\item 
+def \mbox{\hyperlink{classFileParser_1_1FileParser_acad60015ffe026ad25104c31046ea7ac}{start\+Struct\+Obj}} (self, struct\+Match\+List)
+\item 
+def \mbox{\hyperlink{classFileParser_1_1FileParser_a4494d6a10e27d57057e1d9f3f543c2e1}{finish\+Struct\+Obj}} (self, struct\+Match\+List, s\+\_\+obj)
+\item 
+def \mbox{\hyperlink{classFileParser_1_1FileParser_aea324ae4f00dead0f43cde151ea974a2}{make\+Define\+Obj}} (self, match\+List)
+\item 
+def \mbox{\hyperlink{classFileParser_1_1FileParser_ae62a3614b4c8c7af708a744921a6fc76}{make\+Constexpr\+Obj}} (self, match\+List)
+\item 
+def \mbox{\hyperlink{classFileParser_1_1FileParser_ada4dcdf5c57af6f3fcc58f1c3583253f}{make\+Typedef\+Obj}} (self, match\+List)
+\item 
+def \mbox{\hyperlink{classFileParser_1_1FileParser_aaf6a30b8f614efd01956e1c2671a57ff}{make\+Array\+Obj}} (self, match\+List)
+\item 
+def \mbox{\hyperlink{classFileParser_1_1FileParser_a6fa22d3650182e9c0afcc302ab173f33}{make2d\+Array\+Obj}} (self, match\+List)
+\item 
+def \mbox{\hyperlink{classFileParser_1_1FileParser_a53a339f7b0195a3d1909e79539280341}{make\+Var\+Obj}} (self, match\+List)
+\item 
+def \mbox{\hyperlink{classFileParser_1_1FileParser_af204a3b26e7c61fdf36b8ffb593be52b}{make\+Enum\+Obj}} (self, match\+List)
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classFileParser_1_1FileParser_a6e5893c7f34143cd7bfffd0144e50b5d}\label{classFileParser_1_1FileParser_a6e5893c7f34143cd7bfffd0144e50b5d}} 
+{\bfseries obj\+\_\+list}
+\item 
+\mbox{\Hypertarget{classFileParser_1_1FileParser_ae1a581a2c5649c80c072df8506e36e89}\label{classFileParser_1_1FileParser_ae1a581a2c5649c80c072df8506e36e89}} 
+{\bfseries code\+\_\+reg}
+\item 
+\mbox{\Hypertarget{classFileParser_1_1FileParser_ab86d0d1842eb80e35e5858232cdd3c3f}\label{classFileParser_1_1FileParser_ab86d0d1842eb80e35e5858232cdd3c3f}} 
+{\bfseries current\+\_\+file\+\_\+name}
+\item 
+\mbox{\Hypertarget{classFileParser_1_1FileParser_a7ee89dc09126f0e48e7202247505e427}\label{classFileParser_1_1FileParser_a7ee89dc09126f0e48e7202247505e427}} 
+{\bfseries current\+\_\+line\+\_\+num}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyVerb}Will take .c .cpp and .h files and parse them
+    for their contents. Contents include structs, unions, 
+    constants (const, constexpr, #define) and typedefs.
+The contents will then be made into objects,
+    put into a list and the user can do what they want.
+\end{DoxyVerb}
+ 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classFileParser_1_1FileParser_a2b09e8b1b8fb013380b737eb57de6864}\label{classFileParser_1_1FileParser_a2b09e8b1b8fb013380b737eb57de6864}} 
+\index{FileParser.FileParser@{FileParser.FileParser}!\_\_init\_\_@{\_\_init\_\_}}
+\index{\_\_init\_\_@{\_\_init\_\_}!FileParser.FileParser@{FileParser.FileParser}}
+\doxysubsubsection{\texorpdfstring{\_\_init\_\_()}{\_\_init\_\_()}}
+{\footnotesize\ttfamily def File\+Parser.\+File\+Parser.\+\_\+\+\_\+init\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Initialize class variables including an instance of the Tokens class
+\end{DoxyVerb}
+ 
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classFileParser_1_1FileParser_a4494d6a10e27d57057e1d9f3f543c2e1}\label{classFileParser_1_1FileParser_a4494d6a10e27d57057e1d9f3f543c2e1}} 
+\index{FileParser.FileParser@{FileParser.FileParser}!finishStructObj@{finishStructObj}}
+\index{finishStructObj@{finishStructObj}!FileParser.FileParser@{FileParser.FileParser}}
+\doxysubsubsection{\texorpdfstring{finishStructObj()}{finishStructObj()}}
+{\footnotesize\ttfamily def File\+Parser.\+File\+Parser.\+finish\+Struct\+Obj (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{struct\+Match\+List,  }\item[{}]{s\+\_\+obj }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}As structs are usually multiline definitions, this function
+    is called when the end of the struct def is matched and
+    checks for completion, an instance name or possibly a typedef name.
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classFileParser_1_1FileParser_a6fa22d3650182e9c0afcc302ab173f33}\label{classFileParser_1_1FileParser_a6fa22d3650182e9c0afcc302ab173f33}} 
+\index{FileParser.FileParser@{FileParser.FileParser}!make2dArrayObj@{make2dArrayObj}}
+\index{make2dArrayObj@{make2dArrayObj}!FileParser.FileParser@{FileParser.FileParser}}
+\doxysubsubsection{\texorpdfstring{make2dArrayObj()}{make2dArrayObj()}}
+{\footnotesize\ttfamily def File\+Parser.\+File\+Parser.\+make2d\+Array\+Obj (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{match\+List }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Make object specific for 2 dimensional arrays in cpp
+This object will include a data type, instance name, and sizes for the array
+This object will, however, NOT automatically determine the size of the 2d
+    from an initialized 2d array.
+@todo Add support for initialized 2d arrays (calculate size based on init)
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classFileParser_1_1FileParser_aaf6a30b8f614efd01956e1c2671a57ff}\label{classFileParser_1_1FileParser_aaf6a30b8f614efd01956e1c2671a57ff}} 
+\index{FileParser.FileParser@{FileParser.FileParser}!makeArrayObj@{makeArrayObj}}
+\index{makeArrayObj@{makeArrayObj}!FileParser.FileParser@{FileParser.FileParser}}
+\doxysubsubsection{\texorpdfstring{makeArrayObj()}{makeArrayObj()}}
+{\footnotesize\ttfamily def File\+Parser.\+File\+Parser.\+make\+Array\+Obj (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{match\+List }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Make an object specific for arrays in cpp
+This object will include a data type, instance name, and array size
+If array size is not given (in the case of initialized arrays at compile time)
+    then it will be calculated automatically based on the initial array decaration
+    (ex. uint8_t my_array[] = {1, 2, 3};)
+    The size is 3
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classFileParser_1_1FileParser_ae62a3614b4c8c7af708a744921a6fc76}\label{classFileParser_1_1FileParser_ae62a3614b4c8c7af708a744921a6fc76}} 
+\index{FileParser.FileParser@{FileParser.FileParser}!makeConstexprObj@{makeConstexprObj}}
+\index{makeConstexprObj@{makeConstexprObj}!FileParser.FileParser@{FileParser.FileParser}}
+\doxysubsubsection{\texorpdfstring{makeConstexprObj()}{makeConstexprObj()}}
+{\footnotesize\ttfamily def File\+Parser.\+File\+Parser.\+make\+Constexpr\+Obj (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{match\+List }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Make an object specific for constexpr value in cpp
+This will later be used to swap names out for values
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classFileParser_1_1FileParser_aea324ae4f00dead0f43cde151ea974a2}\label{classFileParser_1_1FileParser_aea324ae4f00dead0f43cde151ea974a2}} 
+\index{FileParser.FileParser@{FileParser.FileParser}!makeDefineObj@{makeDefineObj}}
+\index{makeDefineObj@{makeDefineObj}!FileParser.FileParser@{FileParser.FileParser}}
+\doxysubsubsection{\texorpdfstring{makeDefineObj()}{makeDefineObj()}}
+{\footnotesize\ttfamily def File\+Parser.\+File\+Parser.\+make\+Define\+Obj (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{match\+List }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Make an object specific for a defined value in cpp
+This will later be used to swap names out for values
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classFileParser_1_1FileParser_af204a3b26e7c61fdf36b8ffb593be52b}\label{classFileParser_1_1FileParser_af204a3b26e7c61fdf36b8ffb593be52b}} 
+\index{FileParser.FileParser@{FileParser.FileParser}!makeEnumObj@{makeEnumObj}}
+\index{makeEnumObj@{makeEnumObj}!FileParser.FileParser@{FileParser.FileParser}}
+\doxysubsubsection{\texorpdfstring{makeEnumObj()}{makeEnumObj()}}
+{\footnotesize\ttfamily def File\+Parser.\+File\+Parser.\+make\+Enum\+Obj (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{match\+List }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Make object specific for [typedef] enum in cpp
+The data type is assumed to be an int32_t
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classFileParser_1_1FileParser_ada4dcdf5c57af6f3fcc58f1c3583253f}\label{classFileParser_1_1FileParser_ada4dcdf5c57af6f3fcc58f1c3583253f}} 
+\index{FileParser.FileParser@{FileParser.FileParser}!makeTypedefObj@{makeTypedefObj}}
+\index{makeTypedefObj@{makeTypedefObj}!FileParser.FileParser@{FileParser.FileParser}}
+\doxysubsubsection{\texorpdfstring{makeTypedefObj()}{makeTypedefObj()}}
+{\footnotesize\ttfamily def File\+Parser.\+File\+Parser.\+make\+Typedef\+Obj (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{match\+List }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Make an object specific for typedef value in cpp
+This will later be used to swap names out for base data types in cpp
+    as well as exchange typedef'd member variable objects into
+    struct objects.
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classFileParser_1_1FileParser_a53a339f7b0195a3d1909e79539280341}\label{classFileParser_1_1FileParser_a53a339f7b0195a3d1909e79539280341}} 
+\index{FileParser.FileParser@{FileParser.FileParser}!makeVarObj@{makeVarObj}}
+\index{makeVarObj@{makeVarObj}!FileParser.FileParser@{FileParser.FileParser}}
+\doxysubsubsection{\texorpdfstring{makeVarObj()}{makeVarObj()}}
+{\footnotesize\ttfamily def File\+Parser.\+File\+Parser.\+make\+Var\+Obj (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{match\+List }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Make object specific for a variable in cpp
+This object will include, at minimum, a data type and instance name
+If the variable is initialized, the object will include the init value
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classFileParser_1_1FileParser_a017c96f3f60db76b66e8bbe34b714af1}\label{classFileParser_1_1FileParser_a017c96f3f60db76b66e8bbe34b714af1}} 
+\index{FileParser.FileParser@{FileParser.FileParser}!parseFile@{parseFile}}
+\index{parseFile@{parseFile}!FileParser.FileParser@{FileParser.FileParser}}
+\doxysubsubsection{\texorpdfstring{parseFile()}{parseFile()}}
+{\footnotesize\ttfamily def File\+Parser.\+File\+Parser.\+parse\+File (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{file }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Implementation of the class description. 
+Parse file for Cpp objects.
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classFileParser_1_1FileParser_a7eadc6cb7351ae4374133f2f73b747a4}\label{classFileParser_1_1FileParser_a7eadc6cb7351ae4374133f2f73b747a4}} 
+\index{FileParser.FileParser@{FileParser.FileParser}!parseFileList@{parseFileList}}
+\index{parseFileList@{parseFileList}!FileParser.FileParser@{FileParser.FileParser}}
+\doxysubsubsection{\texorpdfstring{parseFileList()}{parseFileList()}}
+{\footnotesize\ttfamily def File\+Parser.\+File\+Parser.\+parse\+File\+List (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{file\+List }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Take list of file names and run all of them through the
+    'parseFile' function
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classFileParser_1_1FileParser_acad60015ffe026ad25104c31046ea7ac}\label{classFileParser_1_1FileParser_acad60015ffe026ad25104c31046ea7ac}} 
+\index{FileParser.FileParser@{FileParser.FileParser}!startStructObj@{startStructObj}}
+\index{startStructObj@{startStructObj}!FileParser.FileParser@{FileParser.FileParser}}
+\doxysubsubsection{\texorpdfstring{startStructObj()}{startStructObj()}}
+{\footnotesize\ttfamily def File\+Parser.\+File\+Parser.\+start\+Struct\+Obj (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{struct\+Match\+List }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}structs are usually multiline definitions, there for check the 
+    first line a struct is declared (or possibly instantiated)
+    and begin an object to be filled with member variables 
+    (which could include another struct)
+\end{DoxyVerb}
+ 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+File\+Parser.\+py\end{DoxyCompactItemize}

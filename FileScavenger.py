@@ -14,6 +14,10 @@ class FileScavenger(object):
         self.file_exts = ['.h', '.c']
         
     def scavenge(self, topDir=os.getcwd(), exDirs=list()):
+        """
+        Recursively find all .c, .cpp, and .h files within a top level directory
+        Return a list of python path variables representing each file
+        """
         path = Path(topDir)
         ex_paths = self.buildExcludePaths(topDir, exDirs)
         if not (path.is_dir() and path.exists()): 
@@ -30,6 +34,10 @@ class FileScavenger(object):
         return self.files
             
     def buildExcludePaths(self, topDir=os.getcwd(), exDirs=list()):
+        """
+        Given a top level director and a list of inner directories, build and 
+            return a list of python path variables representing each inner dir
+        """
         if len(exDirs) < 1:
             return list()
         ex_paths = list()

@@ -13,20 +13,37 @@ import Utils
 print_found_objects = False
 
 class FileParser(object):
+    """
+    Will take .c .cpp and .h files and parse them
+        for their contents. Contents include structs, unions, 
+        constants (const, constexpr, #define) and typedefs.
+    The contents will then be made into objects,
+        put into a list and the user can do what they want.
+    """
     def __init__(self):
+        """
+        Initialize class variables including an instance of the Tokens class
+        """
         self.obj_list = list()
         self.code_reg = Tokens.CodeRegex()
         self.current_file_name = ""
         self.current_line_num = 0
         
     def parseFileList(self, fileList):
+        """
+        Take list of file names and run all of them through the
+            'parseFile' function
+        """
         for f in fileList:
             
             self.obj_list.append(self.parseFile(f))
         return self.obj_list
     
     def parseFile(self, file):
-        
+        """
+        Implementation of the class description. 
+        Parse file for Cpp objects.
+        """
         self.current_file_name = file
         
         print(file)
@@ -189,11 +206,6 @@ class FileParser(object):
                         if print_found_objects:
                             print("Found array")
                             print(match_list)
-#                    else:
-#                        obj_list.append(cpp_obj)
-#                        if print_found_objects:
-#                            print("Found array")
-#                            print(match_list)
                     continue
                 
                 #
@@ -276,10 +288,16 @@ class FileParser(object):
                         
         return obj_list
     
-    #
-    # STRUCT (UNION) START
-    #
+    """
+    STRUCT (UNION) START
+    """
     def startStructObj(self, structMatchList):
+        """
+        structs are usually multiline definitions, there for check the 
+            first line a struct is declared (or possibly instantiated)
+            and begin an object to be filled with member variables 
+            (which could include another struct)
+        """
         s_obj = CppObject.CppStruct()
         
         if len(structMatchList) < 1:
@@ -306,16 +324,17 @@ class FileParser(object):
                     s_obj.setArray()
                     s_obj.setArraySizeStr(s_tuple[3])
         
-        if CppObject.getObjRepr(s_obj) == "is":
-            print("Found the struct 'is'")
-            print(structMatchList)
-        
         return s_obj
     
-    #
-    # STRUCT (UNION) END
-    #
+    """
+    STRUCT (UNION) END
+    """
     def finishStructObj(self, structMatchList, s_obj):
+        """
+        As structs are usually multiline definitions, this function
+            is called when the end of the struct def is matched and
+            checks for completion, an instance name or possibly a typedef name.
+        """
         if len(structMatchList) < 1:
             return s_obj
         
@@ -338,10 +357,14 @@ class FileParser(object):
         
         return s_obj
     
-    #
-    # DEFINE
-    #
+    """
+    DEFINE
+    """
     def makeDefineObj(self, matchList):
+        """
+        Make an object specific for a defined value in cpp
+        This will later be used to swap names out for values
+        """
         u_obj = CppObject.CppUnit()
         
         if len(matchList) < 1:
@@ -358,10 +381,14 @@ class FileParser(object):
         u_obj.setValueStr(obj_tuple[2])
         return u_obj
     
-    #
-    # CONSTEXPR
-    #
+    """
+    CONSTEXPR
+    """
     def makeConstexprObj(self, matchList):
+        """
+        Make an object specific for constexpr value in cpp
+        This will later be used to swap names out for values
+        """
         u_obj = CppObject.CppUnit()
         
         if len(matchList) < 1:
@@ -379,10 +406,16 @@ class FileParser(object):
         u_obj.setValueStr(obj_tuple[3])
         return u_obj
     
-    #
-    # TYPEDEF
-    #
+    """
+    TYPEDEF
+    """
     def makeTypedefObj(self, matchList):
+        """
+        Make an object specific for typedef value in cpp
+        This will later be used to swap names out for base data types in cpp
+            as well as exchange typedef'd member variable objects into
+            struct objects.
+        """
         u_obj = CppObject.CppUnit()
         
         if len(matchList) < 1:
@@ -403,10 +436,18 @@ class FileParser(object):
         
         return u_obj
     
-    #
-    # ARRAY
-    #
+    """
+    ARRAY
+    """
     def makeArrayObj(self, matchList):
+        """
+        Make an object specific for arrays in cpp
+        This object will include a data type, instance name, and array size
+        If array size is not given (in the case of initialized arrays at compile time)
+            then it will be calculated automatically based on the initial array decaration
+            (ex. uint8_t my_array[] = {1, 2, 3};)
+            The size is 3
+        """
         u_obj = CppObject.CppUnit()
         
         if len(matchList) < 1:
@@ -444,10 +485,17 @@ class FileParser(object):
         
         return u_obj
     
-    #
-    # 2D ARRAY
-    #
+    """
+    2D ARRAY
+    """
     def make2dArrayObj(self, matchList):
+        """
+        Make object specific for 2 dimensional arrays in cpp
+        This object will include a data type, instance name, and sizes for the array
+        This object will, however, NOT automatically determine the size of the 2d
+            from an initialized 2d array.
+        @todo Add support for initialized 2d arrays (calculate size based on init)
+        """
         u_obj = CppObject.CppUnit()
         
         if len(matchList) < 1:
@@ -482,10 +530,15 @@ class FileParser(object):
         
         return u_obj
     
-    #
-    # VARIABLE
-    #
+    """
+    VARIABLE
+    """
     def makeVarObj(self, matchList):
+        """
+        Make object specific for a variable in cpp
+        This object will include, at minimum, a data type and instance name
+        If the variable is initialized, the object will include the init value
+        """
         u_obj = CppObject.CppUnit()
         
         if len(matchList) < 1:
@@ -528,10 +581,14 @@ class FileParser(object):
         
         return u_obj
         
-    #
-    # ENUM
-    #
+    """
+    ENUM
+    """
     def makeEnumObj(self, matchList):
+        """
+        Make object specific for [typedef] enum in cpp
+        The data type is assumed to be an int32_t
+        """
         u_obj = CppObject.CppUnit()
         
         

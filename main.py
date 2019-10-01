@@ -23,10 +23,34 @@ from FileScavenger import FileScavenger
 from FileParser import FileParser
 from ObjectFormatter import ObjectFormatter
 
+
+def main(top_dir="", exclude_dirs=[]):
+    """
+    Run main program
+    1) Use the FileScavenger.scavenge to get all dirs in top level
+        excluding the exclude dirs
+    2) Use FileParser.parseFileList to parse all the files in the project
+        and return a list of objects
+    3) Pass the object list to ObjectFormatter.resolveProjectHierarchy 
+        to properly resolve the cpp objects and values
+    4) Sort the returned object list using ObjectFormatter.sortStructHierarchy
+    5) Write the sorted object list to file
+    """
+
+    fScav = FileScavenger()
+    file_list = fScav.scavenge(top_dir, exclude_dirs)
+    
+    fParser = FileParser()
+    objList = fParser.parseFileList(file_list)
+    
+    objForm = ObjectFormatter()
+    objList = objForm.resolveProjectHierarchy(objList)
+    
+    objList = objForm.sortStructHierarchy(objList)
+    
+    objForm.objListToFile(objList)
+
 if __name__ == '__main__':
-    
-    test_dir = "C:/Users/MaxR/Desktop/PYTHON_Workspace/OPtICS/OPtICS_Test"
-    
     
     if os.name == "posix":
         top_dir = "/home/maxr/Desktop/PYTHON_Workspace/LRADS_PPP_US/src"
@@ -35,18 +59,13 @@ if __name__ == '__main__':
     
     exclude_dirs = ["bme280", "device", "memory_management", "pid", "ipc"]
     
+    #
+    # RUN MAIN
+    #
+    main(top_dir, exclude_dirs)
     
-    fScav = FileScavenger()
-    file_list = fScav.scavenge(top_dir, exclude_dirs)
     
-    print("Beginning FileParser")
-    fParser = FileParser()
-    objList = fParser.parseFileList(file_list)
-    print("End of FileParser")
     
-    objForm = ObjectFormatter()
-    objList = objForm.resolveProjectHierarchy(objList)
     
-    objList = objForm.sortStructHierarchy(objList)
     
-    objForm.objListToFile(objList)
+    

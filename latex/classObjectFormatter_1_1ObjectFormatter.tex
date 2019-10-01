@@ -1,0 +1,116 @@
+\hypertarget{classObjectFormatter_1_1ObjectFormatter}{}\doxysection{Object\+Formatter.\+Object\+Formatter Class Reference}
+\label{classObjectFormatter_1_1ObjectFormatter}\index{ObjectFormatter.ObjectFormatter@{ObjectFormatter.ObjectFormatter}}
+Inheritance diagram for Object\+Formatter.\+Object\+Formatter\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classObjectFormatter_1_1ObjectFormatter}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classObjectFormatter_1_1ObjectFormatter_a501354bd6f17e2c6b80a87020dcdc901}\label{classObjectFormatter_1_1ObjectFormatter_a501354bd6f17e2c6b80a87020dcdc901}} 
+def {\bfseries \+\_\+\+\_\+init\+\_\+\+\_\+} (self)
+\item 
+def \mbox{\hyperlink{classObjectFormatter_1_1ObjectFormatter_a8ddba856e54105db2e1acdedd5cfe519}{resolve\+Project\+Hierarchy}} (self, list\+Of\+Obj\+Lists)
+\item 
+def \mbox{\hyperlink{classObjectFormatter_1_1ObjectFormatter_a9fa06e81431d3fabba8fd5bc9ff06d0a}{get\+Data\+Type\+To\+Np\+Type}} (self, data\+Type\+Str)
+\item 
+def \mbox{\hyperlink{classObjectFormatter_1_1ObjectFormatter_a50e55c5937229aa72834b8c618b31987}{get\+Struct\+Dtype\+Name}} (self, struct\+Name=\char`\"{}\char`\"{})
+\item 
+def \mbox{\hyperlink{classObjectFormatter_1_1ObjectFormatter_a6cbdec926b9570ced670c6188a611d85}{obj\+To\+Dtype\+Member\+Str}} (self, obj)
+\item 
+def \mbox{\hyperlink{classObjectFormatter_1_1ObjectFormatter_ac10c0f5fbe53ff0a870f1478ede32107}{struct\+To\+Dtype}} (self, s\+Obj)
+\item 
+def \mbox{\hyperlink{classObjectFormatter_1_1ObjectFormatter_a15e8a549a83dbf4c4cb236d9dd332677}{sort\+Struct\+Hierarchy}} (self, struct\+List)
+\item 
+def \mbox{\hyperlink{classObjectFormatter_1_1ObjectFormatter_a3ec2a8913d458cf6ffc944480c2a351d}{obj\+List\+To\+File}} (self, obj\+List, filename=\char`\"{}O\+Pt\+I\+C\+S\+\_\+dtypes.\+py\char`\"{})
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classObjectFormatter_1_1ObjectFormatter_a9fa06e81431d3fabba8fd5bc9ff06d0a}\label{classObjectFormatter_1_1ObjectFormatter_a9fa06e81431d3fabba8fd5bc9ff06d0a}} 
+\index{ObjectFormatter.ObjectFormatter@{ObjectFormatter.ObjectFormatter}!getDataTypeToNpType@{getDataTypeToNpType}}
+\index{getDataTypeToNpType@{getDataTypeToNpType}!ObjectFormatter.ObjectFormatter@{ObjectFormatter.ObjectFormatter}}
+\doxysubsubsection{\texorpdfstring{getDataTypeToNpType()}{getDataTypeToNpType()}}
+{\footnotesize\ttfamily def Object\+Formatter.\+Object\+Formatter.\+get\+Data\+Type\+To\+Np\+Type (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{data\+Type\+Str }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Using Tokens.NpTypeMap dictionary, convert cpp data types to the
+    numpy dtype representation
+Ex. int8_t --> np.int8
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classObjectFormatter_1_1ObjectFormatter_a50e55c5937229aa72834b8c618b31987}\label{classObjectFormatter_1_1ObjectFormatter_a50e55c5937229aa72834b8c618b31987}} 
+\index{ObjectFormatter.ObjectFormatter@{ObjectFormatter.ObjectFormatter}!getStructDtypeName@{getStructDtypeName}}
+\index{getStructDtypeName@{getStructDtypeName}!ObjectFormatter.ObjectFormatter@{ObjectFormatter.ObjectFormatter}}
+\doxysubsubsection{\texorpdfstring{getStructDtypeName()}{getStructDtypeName()}}
+{\footnotesize\ttfamily def Object\+Formatter.\+Object\+Formatter.\+get\+Struct\+Dtype\+Name (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{struct\+Name = {\ttfamily \char`\"{}\char`\"{}} }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Simply append '_dtype' to the end of the struct name
+This keeps struct names consistent
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classObjectFormatter_1_1ObjectFormatter_a3ec2a8913d458cf6ffc944480c2a351d}\label{classObjectFormatter_1_1ObjectFormatter_a3ec2a8913d458cf6ffc944480c2a351d}} 
+\index{ObjectFormatter.ObjectFormatter@{ObjectFormatter.ObjectFormatter}!objListToFile@{objListToFile}}
+\index{objListToFile@{objListToFile}!ObjectFormatter.ObjectFormatter@{ObjectFormatter.ObjectFormatter}}
+\doxysubsubsection{\texorpdfstring{objListToFile()}{objListToFile()}}
+{\footnotesize\ttfamily def Object\+Formatter.\+Object\+Formatter.\+obj\+List\+To\+File (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{obj\+List,  }\item[{}]{filename = {\ttfamily \char`\"{}OPtICS\+\_\+dtypes.py\char`\"{}} }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Iterate through a list of objects and create dtype definitions for all of
+    them, then write those strings to file.
+The file WILL OVERWRITE previous files with the same name.
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classObjectFormatter_1_1ObjectFormatter_a6cbdec926b9570ced670c6188a611d85}\label{classObjectFormatter_1_1ObjectFormatter_a6cbdec926b9570ced670c6188a611d85}} 
+\index{ObjectFormatter.ObjectFormatter@{ObjectFormatter.ObjectFormatter}!objToDtypeMemberStr@{objToDtypeMemberStr}}
+\index{objToDtypeMemberStr@{objToDtypeMemberStr}!ObjectFormatter.ObjectFormatter@{ObjectFormatter.ObjectFormatter}}
+\doxysubsubsection{\texorpdfstring{objToDtypeMemberStr()}{objToDtypeMemberStr()}}
+{\footnotesize\ttfamily def Object\+Formatter.\+Object\+Formatter.\+obj\+To\+Dtype\+Member\+Str (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{obj }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Take the essential properties of a cpp object and make it
+    a member description for a dtype definition
+Ex. 'int8_t my_arr[3];' --> obj
+    obj --> ('my_arr', np.int8, 3),
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classObjectFormatter_1_1ObjectFormatter_a8ddba856e54105db2e1acdedd5cfe519}\label{classObjectFormatter_1_1ObjectFormatter_a8ddba856e54105db2e1acdedd5cfe519}} 
+\index{ObjectFormatter.ObjectFormatter@{ObjectFormatter.ObjectFormatter}!resolveProjectHierarchy@{resolveProjectHierarchy}}
+\index{resolveProjectHierarchy@{resolveProjectHierarchy}!ObjectFormatter.ObjectFormatter@{ObjectFormatter.ObjectFormatter}}
+\doxysubsubsection{\texorpdfstring{resolveProjectHierarchy()}{resolveProjectHierarchy()}}
+{\footnotesize\ttfamily def Object\+Formatter.\+Object\+Formatter.\+resolve\+Project\+Hierarchy (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{list\+Of\+Obj\+Lists }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}-------------------------------------------------------------------
+# Design
+-------------------------------------------------------------------
+# 1) Separate objects
+#    a) Structs
+#    b) preprocessor objects and const objects
+# 2) Use (1b) list to resolve non_struct variable types to standard types
+# 3) Use (1b) list to resolve variables to numbers
+# 4) Use struct names/typedef names to resolve member structs
+# 5) Rewrite object list to reflect changes
+-------------------------------------------------------------------
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classObjectFormatter_1_1ObjectFormatter_a15e8a549a83dbf4c4cb236d9dd332677}\label{classObjectFormatter_1_1ObjectFormatter_a15e8a549a83dbf4c4cb236d9dd332677}} 
+\index{ObjectFormatter.ObjectFormatter@{ObjectFormatter.ObjectFormatter}!sortStructHierarchy@{sortStructHierarchy}}
+\index{sortStructHierarchy@{sortStructHierarchy}!ObjectFormatter.ObjectFormatter@{ObjectFormatter.ObjectFormatter}}
+\doxysubsubsection{\texorpdfstring{sortStructHierarchy()}{sortStructHierarchy()}}
+{\footnotesize\ttfamily def Object\+Formatter.\+Object\+Formatter.\+sort\+Struct\+Hierarchy (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{struct\+List }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Sort the list of structs such that all dependent (inner) struct
+are listed first. 
+@todo Fix algorithm, it doesn't quite catch and order all dependencies for some reason
+\end{DoxyVerb}
+ ~\newline
+ \mbox{\Hypertarget{classObjectFormatter_1_1ObjectFormatter_ac10c0f5fbe53ff0a870f1478ede32107}\label{classObjectFormatter_1_1ObjectFormatter_ac10c0f5fbe53ff0a870f1478ede32107}} 
+\index{ObjectFormatter.ObjectFormatter@{ObjectFormatter.ObjectFormatter}!structToDtype@{structToDtype}}
+\index{structToDtype@{structToDtype}!ObjectFormatter.ObjectFormatter@{ObjectFormatter.ObjectFormatter}}
+\doxysubsubsection{\texorpdfstring{structToDtype()}{structToDtype()}}
+{\footnotesize\ttfamily def Object\+Formatter.\+Object\+Formatter.\+struct\+To\+Dtype (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{s\+Obj }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Build a numpy dtype definition from a struct object.
+A header will be created with the struct name and each of it's 
+    member variables will be converted into a dtype member string
+    and placed in this definition string.
+\end{DoxyVerb}
+ 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Object\+Formatter.\+py\end{DoxyCompactItemize}

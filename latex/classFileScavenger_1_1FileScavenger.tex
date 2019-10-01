@@ -1,0 +1,53 @@
+\hypertarget{classFileScavenger_1_1FileScavenger}{}\doxysection{File\+Scavenger.\+File\+Scavenger Class Reference}
+\label{classFileScavenger_1_1FileScavenger}\index{FileScavenger.FileScavenger@{FileScavenger.FileScavenger}}
+Inheritance diagram for File\+Scavenger.\+File\+Scavenger\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classFileScavenger_1_1FileScavenger}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classFileScavenger_1_1FileScavenger_a5a98c6e3de13343caf7039064e34ea25}\label{classFileScavenger_1_1FileScavenger_a5a98c6e3de13343caf7039064e34ea25}} 
+def {\bfseries \+\_\+\+\_\+init\+\_\+\+\_\+} (self)
+\item 
+def \mbox{\hyperlink{classFileScavenger_1_1FileScavenger_ae3c1cb23f5d242690c37c0304c9b14db}{scavenge}} (self, top\+Dir=os.\+getcwd(), ex\+Dirs=list())
+\item 
+def \mbox{\hyperlink{classFileScavenger_1_1FileScavenger_a455ced7667969e60e14bd6ca290b15fe}{build\+Exclude\+Paths}} (self, top\+Dir=os.\+getcwd(), ex\+Dirs=list())
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classFileScavenger_1_1FileScavenger_ac8f18b9bbebd05b63a2d5114225dee42}\label{classFileScavenger_1_1FileScavenger_ac8f18b9bbebd05b63a2d5114225dee42}} 
+{\bfseries files}
+\item 
+\mbox{\Hypertarget{classFileScavenger_1_1FileScavenger_a596ab6d4acab722d2b052f57ec3e09a6}\label{classFileScavenger_1_1FileScavenger_a596ab6d4acab722d2b052f57ec3e09a6}} 
+{\bfseries file\+\_\+exts}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classFileScavenger_1_1FileScavenger_a455ced7667969e60e14bd6ca290b15fe}\label{classFileScavenger_1_1FileScavenger_a455ced7667969e60e14bd6ca290b15fe}} 
+\index{FileScavenger.FileScavenger@{FileScavenger.FileScavenger}!buildExcludePaths@{buildExcludePaths}}
+\index{buildExcludePaths@{buildExcludePaths}!FileScavenger.FileScavenger@{FileScavenger.FileScavenger}}
+\doxysubsubsection{\texorpdfstring{buildExcludePaths()}{buildExcludePaths()}}
+{\footnotesize\ttfamily def File\+Scavenger.\+File\+Scavenger.\+build\+Exclude\+Paths (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{top\+Dir = {\ttfamily os.getcwd()},  }\item[{}]{ex\+Dirs = {\ttfamily list()} }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Given a top level director and a list of inner directories, build and 
+    return a list of python path variables representing each inner dir
+\end{DoxyVerb}
+ \mbox{\Hypertarget{classFileScavenger_1_1FileScavenger_ae3c1cb23f5d242690c37c0304c9b14db}\label{classFileScavenger_1_1FileScavenger_ae3c1cb23f5d242690c37c0304c9b14db}} 
+\index{FileScavenger.FileScavenger@{FileScavenger.FileScavenger}!scavenge@{scavenge}}
+\index{scavenge@{scavenge}!FileScavenger.FileScavenger@{FileScavenger.FileScavenger}}
+\doxysubsubsection{\texorpdfstring{scavenge()}{scavenge()}}
+{\footnotesize\ttfamily def File\+Scavenger.\+File\+Scavenger.\+scavenge (\begin{DoxyParamCaption}\item[{}]{self,  }\item[{}]{top\+Dir = {\ttfamily os.getcwd()},  }\item[{}]{ex\+Dirs = {\ttfamily list()} }\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Recursively find all .c, .cpp, and .h files within a top level directory
+Return a list of python path variables representing each file
+\end{DoxyVerb}
+ 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+File\+Scavenger.\+py\end{DoxyCompactItemize}
