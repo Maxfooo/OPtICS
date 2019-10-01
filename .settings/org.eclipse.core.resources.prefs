@@ -1,6 +1,5 @@
 eclipse.preferences.version=1
-encoding/CppObject.py=utf-8
-encoding/FileParser.py=utf-8
-encoding/FileScavenger.py=utf-8
-encoding/ObjectFormatter.py=utf-8
-encoding/main.py=utf-8
+encoding//src/CppObject.py=utf-8
+encoding//src/FileParser.py=utf-8
+encoding//src/ObjectFormatter.py=utf-8
+encoding//src/main.py=utf-8
