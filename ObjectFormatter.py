@@ -8,6 +8,7 @@ Created on Tue Sep 17 12:36:24 2019
 
 import CppObject
 import Tokens
+from itertools import chain
 
 class ObjectFormatter(object):
     def __init__(self):
@@ -40,7 +41,7 @@ class ObjectFormatter(object):
                     non_struct_list.append(obj)
         
         #
-        # GET VALUES FOR TYPEDEF'D AND CONST VARIABLE NAMES
+        # GET VALUES FOR TYPEDEF'D, CONST, AND #DEFINED VARIABLE NAMES
         #
         for non_struct in non_struct_list:
             for n_struct in non_struct_list:
@@ -48,12 +49,15 @@ class ObjectFormatter(object):
                     dtype_str = n_struct.getTypedefName()
                 else:
                     dtype_str = n_struct.getInstanceName()
+                    
                 if non_struct.getDataTypeStr() == dtype_str:
-                    non_struct.setDataType(n_struct.getValueStr())
+                    non_struct.setDataTypeStr(n_struct.getValueStr())
                     if n_struct.isArray():
                         non_struct.setArray()
                         non_struct.setArraySizeStr(n_struct.getArraySizeStr())
-        
+                        non_struct.setIs2dArray(n_struct.is2dArray())
+                        non_struct.setArray2dSizeStr(n_struct.getArray2dSizeStr())
+                    break
         #
         # RESOLVE MEMBER VARIABLE VALUES, NAMES, AND STRUCTS
         #
@@ -77,6 +81,8 @@ class ObjectFormatter(object):
                             non_struct_str = non_struct.getInstanceName()
                         if member.getArraySizeStr() == non_struct_str:
                             member.setArraySizeStr(non_struct.getValueStr())
+                        if member.getArray2dSizeStr() == non_struct_str:
+                            member.setArray2dSizeStr(non_struct.getValueStr())
                             
                     
                     if not member.isStruct():
@@ -111,7 +117,12 @@ class ObjectFormatter(object):
                         s_obj.setDataTypeStr(inner_struct_repr)
                         s_obj.setDeclaration()
                         s_obj.setParentName(member.getParentName())
-                        struct.exchangeMemberVar(member_index, s_obj)                           
+                        if member.isArray():
+                            s_obj.setArray()
+                            s_obj.setArraySizeStr(member.getArraySizeStr())
+                            s_obj.setIs2dArray(member.is2dArray())
+                            s_obj.setArray2dSizeStr(member.getArray2dSizeStr())
+                        struct.exchangeMemberVar(member_index, s_obj)
                         
                 member_index += 1
 
@@ -147,29 +158,46 @@ class ObjectFormatter(object):
         return dtype_str
     
     def objToDtypeMemberStr(self, obj):
+        has_dtype = True
         dtype_str = "  ('"
         dtype_str += obj.getInstanceName()
         s_repr = CppObject.getObjRepr(obj)
         if obj.isStruct():
-            dtype_str += "', {0}".format(self.getStructDtypeName(s_repr))
+            member_repr = self.getStructDtypeName(s_repr)
         else:
-            dtype_str += "', {0}".format(self.getDataTypeToNpType(s_repr)) #obj.getDataTypeStr()))
+            member_repr = self.getDataTypeToNpType(s_repr)
+            
+        if not member_repr:
+            has_dtype = False
+            
+        dtype_str += "', {0}".format(member_repr)
             
         if obj.isArray():
             dtype_str += ", {0}".format(obj.getArraySizeStr())
+            if obj.is2dArray():
+                dtype_str += " * {0}".format(obj.getArray2dSizeStr())
         dtype_str += "),\n"
         
-        return dtype_str
+        return dtype_str, has_dtype
     
     def structToDtype(self, sObj):
+        block_comment = False
         # Using Tyson's python dtype format
         if not sObj.isStruct():
             return
-        s_name = self.getStructDtypeName(CppObject.getObjRepr(sObj))
+        s_name = self.getStructDtypeName(CppObject.getObjRepr(sObj))        
         dtype_str = s_name + " = np.dtype([\n"
         for obj in sObj.getMemberVars():
-            dtype_str += self.objToDtypeMemberStr(obj)
+            d_str, has_dtype = self.objToDtypeMemberStr(obj)
+            dtype_str += d_str
+            if not has_dtype:
+                block_comment = True
         dtype_str += "])\n"
+    
+        # check if all the members have data types, if not, comment the dtype block
+        if block_comment:
+            copy_dtype_str = dtype_str
+            dtype_str = '"""\n' + copy_dtype_str + '"""\n'
     
         return dtype_str
     
@@ -194,7 +222,10 @@ class ObjectFormatter(object):
             else:
                 inserted = False
                 for ss in range(len(sorted_list)):
-                    if CppObject.getObjRepr(structList[s]) in sorted_list[ss].getMemberVarReprs():
+                    possible_child_repr = CppObject.getObjRepr(structList[s])
+                    child_repr_list = sorted_list[ss].getMemberVarReprs()
+                    if possible_child_repr in child_repr_list:
+                        print("inserted: ", possible_child_repr)
                         if ss == 0:
                             sorted_list.insert(0, structList[s])
                         else:
@@ -203,9 +234,21 @@ class ObjectFormatter(object):
                         break
                 
                 if not inserted:
+                    print(CppObject.getObjRepr(structList[s]))
                     sorted_list.append(structList[s])
                     
                         
+        return sorted_list
+    
+    def sortStructHierarchy2(self, structList):
+        """
+        + Sort struct hierarchies into individual arrays
+        + Append structs with no hierarchy to final sorted list
+        + Concatinate and append individual struct hierarchy 
+          lists to final sorted list
+        """
+        sorted_list = []
+        
         return sorted_list
     
     def objListToFile(self, objList, filename="OPtICS_dtypes.py"):

@@ -197,6 +197,23 @@ class FileParser(object):
                     continue
                 
                 #
+                # 2D Arrays
+                #
+                match_list = Utils.regexFindall(self.code_reg.get2dArrayRegex(), line)
+                if len(match_list) > 0:
+                    cpp_obj = self.make2dArrayObj(match_list)
+                    
+                    if cpp_obj.isEmpty():
+                        continue
+                    
+                    if (making_struct):
+                        s_obj_q[s_obj_q_index-1].addMemberVar(cpp_obj)
+                        if print_found_objects:
+                            print("Found 2D array")
+                            print(match_list)
+                    continue
+                
+                #
                 # Variables
                 #
                 match_list = Utils.regexFindall(self.code_reg.getVariableRegex(), line)
@@ -258,7 +275,10 @@ class FileParser(object):
                         
                         
         return obj_list
-            
+    
+    #
+    # STRUCT (UNION) START
+    #
     def startStructObj(self, structMatchList):
         s_obj = CppObject.CppStruct()
         
@@ -292,6 +312,9 @@ class FileParser(object):
         
         return s_obj
     
+    #
+    # STRUCT (UNION) END
+    #
     def finishStructObj(self, structMatchList, s_obj):
         if len(structMatchList) < 1:
             return s_obj
@@ -314,7 +337,10 @@ class FileParser(object):
             s_obj.setInstanceName(name_str)
         
         return s_obj
-        
+    
+    #
+    # DEFINE
+    #
     def makeDefineObj(self, matchList):
         u_obj = CppObject.CppUnit()
         
@@ -332,6 +358,9 @@ class FileParser(object):
         u_obj.setValueStr(obj_tuple[2])
         return u_obj
     
+    #
+    # CONSTEXPR
+    #
     def makeConstexprObj(self, matchList):
         u_obj = CppObject.CppUnit()
         
@@ -350,6 +379,9 @@ class FileParser(object):
         u_obj.setValueStr(obj_tuple[3])
         return u_obj
     
+    #
+    # TYPEDEF
+    #
     def makeTypedefObj(self, matchList):
         u_obj = CppObject.CppUnit()
         
@@ -371,6 +403,9 @@ class FileParser(object):
         
         return u_obj
     
+    #
+    # ARRAY
+    #
     def makeArrayObj(self, matchList):
         u_obj = CppObject.CppUnit()
         
@@ -408,8 +443,48 @@ class FileParser(object):
             u_obj.setArraySizeStr(obj_tuple[index])           
         
         return u_obj
-        
     
+    #
+    # 2D ARRAY
+    #
+    def make2dArrayObj(self, matchList):
+        u_obj = CppObject.CppUnit()
+        
+        if len(matchList) < 1:
+            u_obj.setEmpty()
+            return u_obj
+        
+        obj_tuple = matchList[0]
+        if len(obj_tuple) < 3:
+            u_obj.setEmpty()
+            return u_obj
+        
+        u_obj.setArray()
+        u_obj.set2dArray()
+        u_obj.setDataTypeStr(obj_tuple[0])
+        u_obj.setInstanceName(obj_tuple[1])
+        u_obj.setArraySizeStr(obj_tuple[2])
+        
+        if len(obj_tuple) == 4:
+            u_obj.setArray2dSizeStr(obj_tuple[3])
+        elif len(obj_tuple) == 3:
+            # if row == column, re.findall only catches 1 instance
+            u_obj.setArray2dSizeStr(obj_tuple[2]) 
+        elif len(obj_tuple) == 5:
+            if obj_tuple[0] == Tokens.TYPEDEF:
+                u_obj.setTypedef()
+            u_obj.setDataTypeStr(obj_tuple[1])
+            u_obj.setTypedefName(obj_tuple[2])
+            u_obj.setArraySizeStr(obj_tuple[3])
+            u_obj.setArray2dSizeStr(obj_tuple[4])
+        else:
+            u_obj.setEmpty()       
+        
+        return u_obj
+    
+    #
+    # VARIABLE
+    #
     def makeVarObj(self, matchList):
         u_obj = CppObject.CppUnit()
         
@@ -453,7 +528,9 @@ class FileParser(object):
         
         return u_obj
         
-        
+    #
+    # ENUM
+    #
     def makeEnumObj(self, matchList):
         u_obj = CppObject.CppUnit()
         
@@ -486,7 +563,17 @@ class FileParser(object):
         
 if __name__ == '__main__':
     fParser = FileParser()
-    fParser.parseFile("/home/maxr/Desktop/PYTHON_Workspace/LRADS_PPP_US/src/controllers/ThermalController.h")
-    print("Ran FileParser.py")
+    #file_to_parse = "/home/maxr/Desktop/PYTHON_Workspace/LRADS_PPP_US/src/controllers/ThermalController.h"
+    file_to_parse = "/home/maxr/Desktop/Work/lrads_ppp_us/src/tasks/logged_data_types.h"
+    file_to_parse = "/home/maxr/Desktop/Work/lrads_ppp_us/src/tasks/config_io_task.h"
     
+    obj_list = fParser.parseFile(file_to_parse)
+    
+    
+    for o in obj_list:
+        if o.getInstanceName() == "NUM_CELLS":
+            print(o)
+            
+#        if o.getDataTypeStr() == "ioLoggedData":
+#            print(o.getMemberVars())
     

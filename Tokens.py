@@ -21,7 +21,7 @@ STATIC   = 'static'
 Qualifiers = tuple([CONST, VOLATILE, MUTABLE, STATIC])
 
 
-Avoid = tuple(['void', '\(\s*\)', 'for\s*\(', 'return', '\s*//'])
+Avoid = tuple(['void', '\(\s*\)', 'for\s*\(', 'return', '^\s*//'])
 
 UINT8_T  = 'uint8_t'
 UINT16_T = 'uint16_t'
@@ -171,14 +171,14 @@ class CodeRegex(object):
         # ARRAY REGEX
         #
         self.array_regex = "{0}\s*([{1}]+)\s+(\w+)(\[([\w]*)\])\s*".format(self.qualifiers_tokens, self.data_types_tokens)
-        self.array_regex += "=*\s*\{*([\w\s,]*)\}*;"
+        self.array_regex += "=*\s*\{*([\w\s,]*)\}*;[\s\w/]*"
         
         #
         # 2D ARRAY REGEX
         #
         # does NOT work at the moment
-        self.array_2d_regex = "{0}\s*({1})\s+(\w+)(\[([\w+]*)\])\s*".format(self.qualifiers_tokens, self.data_types_tokens)
-        self.array_2d_regex += "=*\s*\{*([\w\s,]*)\}*;"
+        self.array_2d_regex = "{0}\s*([{1}]+)\s+(\w+)\s*\[([\w]*)\]\[([\w]*)\]\s*".format(self.qualifiers_tokens, self.data_types_tokens)
+        #self.array_2d_regex += "=*\s*\{*([\w\s,]*)\}*;"
         
         #
         # STRUCT HEAD REGEX
@@ -283,16 +283,17 @@ if __name__ == '__main__':
     print(all_string_list)
     
     ############################################
-    print("\n-----Test 'avoid' parsing-----")
+    print("\n-----AVOID-----")
     print(code_reg.getAvoidRegex())
     avoid_string = "void function_prototype();"
     avoid_string_2 = "int i = 0;"
     avoid_string_3 = "uint8_t function_proto(MY_CLASS* boop, const float& f); void"
-    match_list = regexFindall(code_reg.getAvoidRegex(), avoid_string_3)
+    avoid_string_4 = "char utcString[UTC_STRING_LENGTH]; // comment"
+    match_list = regexFindall(code_reg.getAvoidRegex(), avoid_string_4)
     print(match_list)
     
     ############################################
-    print("\n-----Test variable parsing-----")
+    print("\n-----VARIABLE-----")
     var_string = "volatile uint8_t buffer = 0;"
     gen_var_string = "const MY_TYPE vari = 7;"
     var_string_2 = "std::string my_string;"
@@ -302,20 +303,20 @@ if __name__ == '__main__':
     print(match_list)
     
     ############################################
-    print("\n-----Test uninitialized variable parsing-----")
+    print("\n-----VARIABLE: UNINITIALIZED-----")
     var_string = "const unsigned short my_var;"
     match_list = regexFindall(code_reg.getVariableRegex(), var_string)
     print(match_list)    
     
     ############################################
-    print("\n-----Test #define parsing-----")
+    print("\n-----#DEFINE-----")
     define_string = "#define TEST_DEFINE 1"
     print(code_reg.getDefineRegex())
     match_list = regexFindall(code_reg.getDefineRegex(), define_string)
     print(match_list)
     
     ############################################
-    print("\n-----Test constexpr parsing-----")
+    print("\n-----CONSTEXPR-----")
     constexpr_string = "constexpr long double TEST_1_LONG_DOUBLE = 1;"
     constexpr_string_2 = "constexpr MY_TYPE_T MY_SIZE = 200;"
     print(code_reg.getConstexprRegex())
@@ -323,7 +324,7 @@ if __name__ == '__main__':
     print(match_list)
     
     ############################################
-    print("\n-----Test typedef parsing-----")
+    print("\n-----TYPEDEF-----")
     typedef_string = "typedef bool my_bool;"
     typedef_string_2 = "typedef my_bool my_other_bool;"
     print(code_reg.getTypedefRegex())
@@ -331,45 +332,47 @@ if __name__ == '__main__':
     print(match_list)
     
     ############################################
-    print("\n-----Test typedef array parsing-----")
+    print("\n-----TYPEDEF: ARRAY-----")
     typedef_string = "typedef char my_str[60];"
     match_list = regexFindall(code_reg.getTypedefRegex(), typedef_string)
     print(match_list)
     
     ############################################
-    print("\n-----Test typedef array with typedef size-----")
+    print("\n-----TYPEDEF: ARRAY + SIZE-----")
     typedef_string = "typedef float my_floats[MY_FLOAT_SIZE];"
     match_list = regexFindall(code_reg.getTypedefRegex(), typedef_string)
     print(match_list)
     
     ############################################
-    print("\n-----Test array parsing-----")
-    array_string = "unsigned long long my_array[20];"
+    print("\n-----ARRAY-----")
+    array_string = "unsigned long long my_array[20]; // comment"
     array_string_2 = " arr[n] = 0;"
+    array_string_3 = "tc_log_t  cell_tip[NUM_CELLS];"
     print(code_reg.getArrayRegex())
-    match_list = regexFindall(code_reg.getArrayRegex(), array_string_2)
+    match_list = regexFindall(code_reg.getArrayRegex(), array_string_3)
     print(match_list)    
     
     ############################################
-    print("\n-----Test initialized array parsing-----")
+    print("\n-----ARRAY: INITIALIZED-----")
     array_string = "short my_array[] = {1, 2, 3, 4};"
     match_list = regexFindall(code_reg.getArrayRegex(), array_string)
     print(match_list)
     
     ############################################
-    print("\n-----Test array with typedef size-----")
+    print("\n-----ARRAY: TYPEDEF SIZE-----")
     array_string = "volatile int16_t my_array[ARRAY_SIZE];"
     match_list = regexFindall(code_reg.getArrayRegex(), array_string)
     print(match_list)
     
     ############################################
-    print("\n-----Test 2D array parsing-----")
-    array_string = "bool field[ROW][10];"
-    match_list = regexFindall(code_reg.get2dArrayRegex(), array_string)
+    print("\n-----2D ARRAY-----")
+    array_string = "bool field[ROW][COL];"
+    array_string_2 = "bool  op_env [ENV_ARR_SIZE][ENV_ARR_SIZE];"
+    match_list = regexFindall(code_reg.get2dArrayRegex(), array_string_2)
     print(match_list)
     
     ############################################
-    print("\n-----Test struct string parsing-----")
+    print("\n-----STRUCT-----")
     struct_string = """
                     typedef struct
                     {
@@ -377,13 +380,6 @@ if __name__ == '__main__':
                         float max;
                     } __attribute__((packed)) MY_REG_T;
                     """
-    
-    print(code_reg.getStructRegex())
-    match_list = regexFindall(code_reg.getStructRegex(), struct_string)
-    print(match_list)
-    
-    ############################################
-    print("\n-----Test struct string 2 parsing-----")
     struct_string_2 = """
                       struct MY_REG_T {
                           uint32_t reg;
@@ -402,10 +398,9 @@ if __name__ == '__main__':
     
     
     match_list = regexFindall(code_reg.getStructRegex(), struct_string_6)
-    print(match_list)
     
     ############################################
-    print("\n-----Test struct head parsing-----")
+    print("\n-----STRUCT: HEAD-----")
     print(code_reg.getStructHeadRegex())
     struct_string_2 = """
                     struct YOUR_STRUCT your_struct;
@@ -414,7 +409,7 @@ if __name__ == '__main__':
     print(match_list)
     
     ############################################
-    print("\n-----Test struct tail parsing-----")
+    print("\n-----STRUCT: TAIL-----")
     struct_string_2 = """
                     typedef struct
                     {
@@ -429,7 +424,7 @@ if __name__ == '__main__':
     print(match_list)
     
     ############################################
-    print("\n-----Test Union Header parsing-----")
+    print("\n-----UNION: HEAD-----")
     union_string = """
                     union ControlRegister
                     {
@@ -449,7 +444,7 @@ if __name__ == '__main__':
     print(match_list)
     
     ############################################
-    print("\n-----Test Enum regex-----")
+    print("\n-----TENUM-----")
     enum_str = """
                 enum ScanDirection
                 {
@@ -462,7 +457,7 @@ if __name__ == '__main__':
     print(match_list)
     
     ############################################
-    print("\n-----Test Hex Parsing-----")
+    print("\n-----HEX-----")
     hex_str = "0x2000"
     print(code_reg.getHexRegex())
     match_list = regexFindall(code_reg.getHexRegex(), hex_str)
@@ -473,7 +468,7 @@ if __name__ == '__main__':
     ##
     ###################
     
-    print("\n-----Test complete string parsing-----")
+    print("\n-----COMPLETE STRING-----")
     match_list = regexFindall(code_reg.getStructRegex(), all_string)
     print(match_list)
     

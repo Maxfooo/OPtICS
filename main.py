@@ -46,10 +46,6 @@ if __name__ == '__main__':
     
     objForm = ObjectFormatter()
     objList = objForm.resolveProjectHierarchy(objList)
-    #for o in objList:
-    #    print(objForm.structToDtype(o))
-        
-    #objForm.objListToFile(objList)
     
     objList = objForm.sortStructHierarchy(objList)
     

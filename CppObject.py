@@ -15,12 +15,14 @@ class CppObject(object):
     def __init__(self):
         self.is_empty          = False
         self.is_array          = False
+        self.is_2d_array       = False
         self.is_struct         = False
         self.is_typedef        = False
         self.str_data_type     = ""
         self.str_instance_name = ""
         self.str_typedef_name  = ""
         self.str_array_size    = ""
+        self.str_array_2d_size = ""
         self.str_parent_name   = ""
         
     #
@@ -47,6 +49,19 @@ class CppObject(object):
     def isArray(self):
         return self.is_array
         
+    #
+    # IS 2D ARRAY
+    #
+    def setIs2dArray(self, is2dArray):
+        self.is_2d_array = is2dArray
+    def set2dArray(self):
+        self.is_2d_array = True
+    def reset2dArray(self):
+        self.is_2d_array = False
+    def is2dArray(self):
+        return self.is_2d_array
+    
+    
     #
     # IS STRUCT
     #
@@ -104,6 +119,14 @@ class CppObject(object):
         return self.str_array_size
     
     #
+    # ARRAY 2D SIZE
+    #
+    def setArray2dSizeStr(self, a2dSize=""):
+        self.str_array_2d_size = a2dSize
+    def getArray2dSizeStr(self):
+        return self.str_array_2d_size
+    
+    #
     # PARENT NAME
     #
     def setParentName(self, pName=""):
@@ -118,21 +141,25 @@ class CppObject(object):
         repr_str = """
                     Is Empty:........ {0}
                     Is Array:........ {1}
-                    Is Struct:....... {2}
-                    Is Typedef:...... {3}
-                    Data Type:....... {4}
-                    Instance Name:... {5}
-                    Typedef Name:.... {6}
-                    Array Size:...... {7}
-                    Parent Name:..... {8}
+                    Is 2D Array:..... {2}
+                    Is Struct:....... {3}
+                    Is Typedef:...... {4}
+                    Data Type:....... {5}
+                    Instance Name:... {6}
+                    Typedef Name:.... {7}
+                    Array Size:...... {8}
+                    Array 2D Size:... {9}
+                    Parent Name:..... {10}
         """.format( self.is_empty, \
                     self.is_array, \
+                    self.is_2d_array, \
                     self.is_struct, \
                     self.is_typedef, \
                     self.str_data_type, \
                     self.str_instance_name, \
                     self.str_typedef_name, \
                     self.str_array_size, \
+                    self.str_array_2d_size, \
                     self.str_parent_name)
         
         return repr_str
@@ -309,7 +336,16 @@ class CppStruct(CppObject):
         
         for n in self.nested_structs:
             n.setParentName(parent_str)
-            
+    
+    #
+    # MEMBERS HAVE DTYPES?
+    # 
+    def membersHaveDtypes(self):
+        for m in self.member_vars:
+            if len(m.getDataTypeStr()) < 1:
+                return False
+        return True
+    
     #
     # REPRESENT
     #
